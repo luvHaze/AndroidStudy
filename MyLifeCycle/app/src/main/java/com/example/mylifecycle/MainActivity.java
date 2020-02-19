@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        System.out.println("안녕");
         mLevelText = findViewById(R.id.level_text);
         mScoreText = findViewById(R.id.score_text);
 
@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         mScore++;
         mScoreText.setText("점수 : " + mScore);
     }
-
 
     // 화면전환시 OnStop -> OnCreate를 다시 거치기 떄문에 값이 초기화가 됨
     // 그래서 SaveInstanceState 메소드를 이용해서 이전에 값들을 담아둠
