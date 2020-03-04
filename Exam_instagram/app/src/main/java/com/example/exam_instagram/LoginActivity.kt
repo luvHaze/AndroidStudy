@@ -60,6 +60,8 @@ class LoginActivity : AppCompatActivity() {
                 var account = result.signInAccount
                 //2번째 단계 (구글 로그인 - > 파이어베이스)
                 firebaseAtuhWithGoole(account)
+            }else{
+                Toast.makeText(this,requestCode.toString(),Toast.LENGTH_LONG).show()
             }
         }
     }

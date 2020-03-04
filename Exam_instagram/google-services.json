@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "301042440649",
-    "firebase_url": "https://howlstagram-3ca0b.firebaseio.com",
-    "project_id": "howlstagram-3ca0b",
-    "storage_bucket": "howlstagram-3ca0b.appspot.com"
+    "project_number": "65380434973",
+    "firebase_url": "https://ssibal-howl.firebaseio.com",
+    "project_id": "ssibal-howl",
+    "storage_bucket": "ssibal-howl.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:301042440649:android:92bd424e6bda8d55713018",
+        "mobilesdk_app_id": "1:65380434973:android:be268677fe569a2c6372f4",
         "android_client_info": {
           "package_name": "com.example.exam_instagram"
         }
       },
       "oauth_client": [
         {
-          "client_id": "301042440649-ckc59cq3aldt4bbnu4b50lf6rnn5lbir.apps.googleusercontent.com",
+          "client_id": "65380434973-nvld6tcqg08q36jj5h52rq44lfhq15v7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCtXXS2xWqGqCIPvix-ICTAS38pLTjrYN4"
+          "current_key": "AIzaSyCsrB3vQ0fuVX_BAi_kgAhSIuiSPPP2CE4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "301042440649-ckc59cq3aldt4bbnu4b50lf6rnn5lbir.apps.googleusercontent.com",
+              "client_id": "65380434973-nvld6tcqg08q36jj5h52rq44lfhq15v7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
