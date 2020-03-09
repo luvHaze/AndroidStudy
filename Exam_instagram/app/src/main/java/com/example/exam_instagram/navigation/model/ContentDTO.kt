@@ -7,7 +7,7 @@ data class ContentDTO(
     var userID: String? = null,
     var timestamp: Long? = null,
     var favortiteCount: Int? = 0,
-    var chkfavorites: Map<String, Boolean> = HashMap()
+    var chkfavorites: MutableMap<String, Boolean> = HashMap()
 ) {
     data class Comment(
         var uid: String? = null,
