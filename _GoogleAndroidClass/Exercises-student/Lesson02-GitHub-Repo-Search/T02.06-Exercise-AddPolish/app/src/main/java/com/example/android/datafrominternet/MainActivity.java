@@ -73,13 +73,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // TODO (14) Create a method called showJsonDataView to show the data and hide the error
-    public void showJasonDataView() {
-
+    public void showJsonDataView() {
+        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+        mSearchResultsTextView.setVisibility(View.VISIBLE);
     }
 
     // TODO (15) Create a method called showErrorMessage to show the error and hide the data
     public void showErrorMessage() {
         mErrorMessageTextView.setVisibility(View.VISIBLE);
+        mSearchResultsTextView.setVisibility(View.INVISIBLE);
     }
 
 
@@ -110,9 +112,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String githubSearchResults) {
             // TODO (27) As soon as the loading is complete, hide the loading indicator
+            mLoadingProgressBar.setVisibility(View.INVISIBLE);
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
                 // TODO (17) Call showJsonDataView if we have valid, non-null results
+                showJsonDataView();
                 mSearchResultsTextView.setText(githubSearchResults);
+            }else{
+                showErrorMessage();
             }
             // TODO (16) Call showErrorMessage if the result is null in onPostExecute
         }

@@ -125,7 +125,7 @@
 
     <string name="condition_unknown">Unknown (<xliff:g id="conditionId">%1$d</xliff:g>)</string>
 
-
+    <string name="WEATHER_API_KEY">ef7108872ae71fd5fd237a0cdd318096</string>
     <!-- - - - - - - - - - - -->
     <!-- Used by NetworkUtils-->
     <!-- - - - - - - - - - - -->
