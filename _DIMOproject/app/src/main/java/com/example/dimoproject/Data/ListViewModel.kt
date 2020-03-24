@@ -14,7 +14,7 @@ class ListViewModel : ViewModel(){
         MemoDAO(realm)
     }
 
-    // MemoDAO 에서 모든 메로를 가져와서 RealmLiveData로 변환하여 사용하는 변수
+    // MemoDAO 에서 모든 메모를 가져와서 RealmLiveData로 변환하여 사용하는 변수
     val memoLiveData : RealmLiveData<MemoData> by lazy {
         RealmLiveData<MemoData> (memoDao.getAllMemos())
     }
