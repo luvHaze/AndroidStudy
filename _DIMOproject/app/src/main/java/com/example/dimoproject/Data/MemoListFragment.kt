@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dimoproject.DetailAcitivity
+import com.example.dimoproject.DetailActivity
 import com.example.dimoproject.R
 import kotlinx.android.synthetic.main.fragment_memo_list.*
 
@@ -51,7 +51,7 @@ class MemoListFragment : Fragment() {
 
                 //ListAdapter의 itemClickListener에서 DetailActivity로 이동하도록 함 + 메모id도 전달함
                 listAdapter.itemClickListener = {
-                    val intent = Intent(activity, DetailAcitivity::class.java)
+                    val intent = Intent(activity, DetailActivity::class.java)
                     intent.putExtra("MEMO_ID", it)
                     startActivity(intent)
                 }
