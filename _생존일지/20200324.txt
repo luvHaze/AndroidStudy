@@ -28,7 +28,6 @@
 				  - 업데이트 하거나 추가하는 기능
 		이 있었고
  
-
 		value?.let{} 은 if(value!=null) 이라는뜻과 같다 
 		즉 value의 값이 null인 상태에서는 let 함수가 실행 되지 못한다.
 
