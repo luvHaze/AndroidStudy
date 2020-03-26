@@ -19,19 +19,16 @@ class MemoDAO(private val realm: Realm) {
             .findFirst() as MemoData
     }
 
-    fun addOrUpdateMemo(memoData: MemoData, title: String, content: String, alarmTime: Date) {
+    fun addOrUpdateMemo(memoData: MemoData) {
         //execute Transaction() 으로 감싸면 쿼리가 끝날때까지 DB 를 안전하게 사용가능
         //(DB 업데이트 하는 쿼리는 반드시 감싸줘야 간섭에 안전)
         realm.executeTransaction {
-            memoData.title = title
-            memoData.content = content
             memoData.createdAt = Date()
-            memoData.alarmTime = alarmTime
-            if (content.length > 100)
-                memoData.summary = content.substring(0..100)
-            else
-                memoData.summary = content
 
+            if (memoData.content.length > 100)
+                memoData.summary = memoData.content.substring(0..100)
+            else
+                memoData.summary = memoData.content
 
             //Managed 상태가 아닌 경우 copyToRealm() 함수로 DB에 추가
             if (!memoData.isManaged) {
