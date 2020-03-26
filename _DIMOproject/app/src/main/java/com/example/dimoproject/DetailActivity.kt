@@ -101,8 +101,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         // 내용이 변경될 때마다 Listeneer 내에서 viewModel의 memoData의 내용도 같이 변경해 줌
-        contentEdit.addTextChangedListener {
-            object : TextWatcher {
+        contentEdit.addTextChangedListener { object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     viewModel!!.memoData.content = s.toString()
                 }
@@ -253,6 +252,10 @@ class DetailActivity : AppCompatActivity() {
                             },null)
                         }
                     })
+                    .setNegativeButton("삭제", DialogInterface.OnClickListener { dialog, which ->
+                        viewModel!!.setLocation(0.0, 0.0)
+                    })
+                    .show()
             }
 
         }
