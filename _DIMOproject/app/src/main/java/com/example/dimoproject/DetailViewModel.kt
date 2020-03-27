@@ -1,11 +1,17 @@
 package com.example.dimoproject
 
 import android.content.Context
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.dimoproject.Data.MemoDAO
 import com.example.dimoproject.Data.MemoData
+import com.example.dimoproject.Data.WeatherData
 import io.realm.Realm
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 
 
@@ -83,6 +89,48 @@ class DetailViewModel : ViewModel() {
         AlarmTool.deleteAlarm(context, memoData.id)
         if (memoData.alarmTime.after(Date())) {
             AlarmTool.addAlarm(context, memoData.id, memoData.alarmTime)
+        }
+    }
+
+    fun deleteWeather(){
+        memoData.weather=""
+        memoLiveData.value=memoData
+    }
+
+    fun setWeather(latitude: Double,longitude: Double){
+        //받아온 좌표를 WeatherData에 넘겨 날씨를 가져와 memoData에 저장하는 함수
+        //viewModelScope는 ViewModel이 소멸할때에 맞춰 코루틴을 정지시켜줌
+        viewModelScope.launch {
+            memoData.weather=WeatherData.getCurrentWeather(latitude,longitude)
+            memoLiveData.value=memoData
+        }
+
+    }
+
+    fun setImageFile(context: Context,bitmap: Bitmap){
+        val imageFile = File(
+            // 앱 데이터 폴더 내에 image라는 하위 폴더 지정
+            context.getDir("image",Context.MODE_PRIVATE)
+            ,memoData.id+".jpg"
+        )
+
+        if(imageFile.exists()) imageFile.delete()
+
+        try {
+            imageFile.createNewFile()
+            //FileOutputStream으로 패러미터로 받은 이미지 테이터를
+            //JPEG으로 압축하여 저장하고 stream 객체로 닫아줌
+            val outputStream=FileOutputStream(imageFile)
+
+            //저장이 끝나면 저장한 이미지 이름을 memo Data에 갱신함
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream)
+            outputStream.close()
+
+            memoData.imageFile=memoData.id+".jpg"
+            memoLiveData.value=memoData
+        }
+        catch (e:Exception){
+            println(e)
         }
     }
 

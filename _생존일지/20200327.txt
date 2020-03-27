@@ -1,0 +1,35 @@
+
+
+배운것    
+
+		LocationManager는 핸드폰의 GPS 그리고 통신사 를 통해서 현재 위도와 경도를 알아낸다.
+
+		왜 InfoView를 만들고 LocationInfoView, AlarmView 에 상속시켜 만드는지 이해가 됐다	(CustomView)
+		
+		AlertDialog를 띄워주기 위해서는 Positive, Negative 둘다 있어야한다는것을 알았다.
+
+		[Context]
+		Context란 현재 사용되고 있는 앱에 대한 전역 환경정보를 가진 친구
+		- Application Context
+		- Activity Context 
+		Activity와 Application class 들은 모두 Context클래스 상속을 받아 만들어짐
+		
+		App Context는 어플리케이션 자체의 생명주기와 함께함
+		Activity Context는 액티비티와 함께 작동해 onDestroy()와 함께 사라진다.
+		액티비티의 환경정보들이 Context에 있고 이 Context로 Intent를 띄우면 액티비티 스택이 쌓이는 것이다.
+		
+		 TIP) 뷰를 수정하거나 할때는 Activity Context를 나머지 경우에는 Application Context를 사용
+
+
+		[Pending Intent]
+		PendingIntent 객체는 Intent 객체 주변을 감싸는 래퍼입니다.
+		 PendingIntent의 기본 목적은 외부 애플리케이션에 권한을 허가하여 안에 들어 있는 Intent를
+		 마치 본인 앱의 자체 프로세스에서 실행하는 것처럼 사용하게 하는 것입니다.
+
+		-> Alarm을 Notification으로 띄워줄때 사용함
+				
+	
+
+배워야 할것	) 환경주기를 좀 더 생각하면서 이해를 해봐야 겠다.
+		  
+		https://blog.naver.com/lorzx99/221289162165 Context 좀 더
