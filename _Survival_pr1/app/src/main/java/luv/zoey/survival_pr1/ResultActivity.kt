@@ -18,7 +18,7 @@ class ResultActivity : AppCompatActivity() {
         val bmi=weight/Math.pow(height/100.0,2.0)
 
         when{
-            bmi>=40 -> tv_Result.text="고도 비만"
+            bmi>=35 -> tv_Result.text="고도 비만"
             bmi>=30 -> tv_Result.text="2단계 비만"
             bmi>=25 -> tv_Result.text="1단계 비만"
             bmi>=23 -> tv_Result.text="과체중"
