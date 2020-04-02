@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="검색사이트">
+        <menu>
+        <item android:id="@+id/action_naver" android:title="네이버"></item>
+        <item android:id="@+id/action_google" android:title="구글"></item>
+        <item android:id="@+id/action_daum" android:title="다음"></item>
+        </menu>
+    </item>
+</menu>
