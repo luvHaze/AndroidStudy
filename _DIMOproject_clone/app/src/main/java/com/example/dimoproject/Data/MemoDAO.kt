@@ -35,7 +35,6 @@ class MemoDAO(private val realm: Realm) {
                 it.copyToRealm(memoData)
             }
         }
-
     }
 
     //전체 MemoData중
