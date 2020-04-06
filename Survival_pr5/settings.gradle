@@ -1,0 +1,2 @@
+rootProject.name='Survival_pr5'
+include ':app'
