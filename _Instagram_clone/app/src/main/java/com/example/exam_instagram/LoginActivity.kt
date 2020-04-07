@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==GOOGLE_LOGIN_CODE){
             var result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            if(result.isSuccess){
+            if(result!!.isSuccess){
                 var account = result.signInAccount
                 //2번째 단계 (구글 로그인 - > 파이어베이스)
                 firebaseAtuhWithGoole(account)
@@ -98,6 +98,8 @@ class LoginActivity : AppCompatActivity() {
                 }
 
             }
+
+
     }
 
 

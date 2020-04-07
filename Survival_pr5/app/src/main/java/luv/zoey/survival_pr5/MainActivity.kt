@@ -87,6 +87,8 @@ class MainActivity : AppCompatActivity() {
         adapter.updateFragments(fragments)
         viewPager.adapter=adapter
 
+
+
         //타이머 기능
         /*timer(period=3000){
             runOnUiThread {
