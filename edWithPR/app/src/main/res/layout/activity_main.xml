@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#00FFFFFF"
+        android:background="@color/movieOrange"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,17 +35,19 @@
             <LinearLayout
                 android:id="@+id/section_First"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:orientation="horizontal">
 
-
                 <ImageView
                     android:id="@+id/moviePicture_imgview"
-                    android:layout_width="220dp"
-                    android:layout_height="match_parent"
-                    android:padding="10dp"
-                    android:src="@color/movieOrange"
+                    android:layout_width="210dp"
+                    android:layout_height="300dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/kingdom_poster"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -69,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:layout_marginTop="100dp"
+                        android:layout_marginTop="160dp"
                         android:text="영화명"
                         android:textColor="#2d2d2d"
                         android:textSize="24sp"
@@ -188,22 +190,21 @@
                     android:layout_weight="1"
                     android:accessibilityHeading="false"
                     android:orientation="vertical"
+                    android:gravity="center"
                     android:visibility="visible">
 
                     <TextView
                         android:id="@+id/title_movieRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center|center_vertical"
-                        android:layout_marginTop="20dp"
                         android:text="예매율" />
 
                     <TextView
                         android:id="@+id/movieRating_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center|center_vertical"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
+                        android:textSize="16sp"
                         android:text="0위"
                         android:textColor="#2d2d2d"
                         android:textStyle="bold" />
@@ -220,26 +221,25 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/title_movieScore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center|center_vertical"
-                        android:layout_marginTop="20dp"
                         android:text="평점" />
 
                     <RatingBar
-                        android:progressTint="#f39c12"
                         android:id="@+id/movieScore_RatinBar"
                         style="@style/Widget.AppCompat.RatingBar.Small"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center|center_vertical"
-                        android:layout_marginTop="10dp"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="8dp"
                         android:numStars="5"
-                        android:rating="4">
+                        android:progressTint="#f39c12"
+                        android:rating="4.5"
+                        android:stepSize="0.5">
 
                     </RatingBar>
                 </LinearLayout>
@@ -254,23 +254,22 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/title_movieCountPeople"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center|center_vertical"
-                        android:layout_marginTop="20dp"
                         android:text="누적관객수" />
 
                     <TextView
                         android:id="@+id/movieCountPeople_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center|center_vertical"
-                        android:layout_marginTop="10dp"
-                        android:text="XXX,XXX명"
+                        android:layout_marginTop="8dp"
+                        android:textSize="16sp"
+                        android:text="000,000명"
                         android:textColor="#2d2d2d"
                         android:textStyle="bold" />
 
@@ -463,7 +462,7 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="30dp"
-                    android:background="@mipmap/ic_launcher"
+                    android:background="@drawable/google_ico"
                     android:padding="15dp" />
 
                 <Button
@@ -472,7 +471,7 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
-                    android:background="@mipmap/ic_launcher"
+                    android:background="@drawable/facebook_ico"
                     android:padding="15dp" />
 
                 <Button
@@ -481,19 +480,19 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
-                    android:background="@mipmap/ic_launcher"
+                    android:background="@drawable/kakao_ico"
                     android:padding="15dp" />
 
                 <Button
-                    android:background="#f39c12"
                     android:id="@+id/reserveMovie_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginLeft="36dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#f39c12"
                     android:text="예매하기" />
             </LinearLayout>
 
