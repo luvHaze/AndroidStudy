@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">edWith_PR</string>
+
+    <string name="lorem_ipsum">
+        Lorem Ipsum is simply dummytext of the printing
+        and typesetting industry. Lorem Ipsumhas been
+        the industry"s standard dummy text ever since the containing Lorem
+    </string>
 </resources>
