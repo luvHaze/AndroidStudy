@@ -17,13 +17,17 @@ class MainActivity : AppCompatActivity() {
 
         var isGoodButtonClicked = false
         var isBadButtonClicked = false
-        var dataSet : MutableList<String> = arrayListOf("가나다","마바사","사가라")
 
-        //리싸이클러 뷰 방향설정
+        // 어뎁터로 보낼 데이터
+        var dataSet : MutableList<String> = arrayListOf("가나다","마바사","사가라","안철수")
+
+        // RecyclerView 사용법 4. 리싸이클러 뷰 방향설정
         val layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         readMovieReview_recyclerView.setLayoutManager(layoutManager)
 
+        // RecyclerView 사용법 4. 리싸이클러 뷰에 어뎁터 설정해주기 끝.
         readMovieReview_recyclerView.adapter=ReviewAdapter(dataSet)
+
 
         movieGood_Button.setOnClickListener {
             var goodCountTemp = movieGoodCount_textView.text.toString().toInt()
@@ -47,6 +51,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             movieGoodCount_textView.setText(goodCountTemp.toString())
+
+            if(isGoodButtonClicked){
+                movieGood_Button.setColorFilter(Color.rgb(255,165,2))
+                movieBad_Button.setColorFilter(Color.rgb(47,53,66))
+            }else{
+                movieGood_Button.setColorFilter(Color.rgb(47,53,66))
+            }
         }
 
         movieBad_Button.setOnClickListener {
@@ -71,6 +82,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             movieBadCount_textView.setText(badCountTemp.toString())
+
+            if(isBadButtonClicked){
+                movieBad_Button.setColorFilter(Color.rgb(255,165,2))
+                movieGood_Button.setColorFilter(Color.rgb(47,53,66))
+            }else{
+                movieBad_Button.setColorFilter(Color.rgb(47,53,66))
+            }
         }
 
 

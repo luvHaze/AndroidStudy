@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:src="@drawable/user_default"
             android:id="@+id/userProfile_imgView"
             android:layout_width="75dp"
             android:layout_height="75dp"
