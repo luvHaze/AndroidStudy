@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/userProfile_imgView"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/userName_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="홍길동"
+            android:textColor="#2f3542"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/userProfile_imgView"
+            app:layout_constraintTop_toTopOf="@+id/userProfile_imgView" />
+
+        <TextView
+            android:id="@+id/writeTime_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:text="24분전"
+
+            android:textColor="#747d8c"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/userName_textView"
+            app:layout_constraintTop_toBottomOf="@+id/userName_textView" />
+
+        <RatingBar
+            android:id="@+id/userRating_ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:numStars="5"
+            android:progressTint="@color/movieOrange"
+            android:rating="4"
+            android:stepSize="0.5"
+            app:layout_constraintEnd_toEndOf="@+id/contentReview_textView"
+            app:layout_constraintTop_toTopOf="@+id/userName_textView" />
+
+        <TextView
+            android:id="@+id/recommandCount_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="212dp"
+            android:layout_marginTop="4dp"
+            android:text="추천  0"
+            android:textColor="#2f3542"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/userProfile_imgView"
+            app:layout_constraintTop_toBottomOf="@+id/contentReview_textView" />
+
+        <TextView
+            android:id="@+id/useReport_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="신고하기"
+            android:textColor="#2f3542"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/recommandCount_textView"
+            app:layout_constraintTop_toTopOf="@+id/recommandCount_textView" />
+
+        <TextView
+            android:id="@+id/contentReview_textView"
+            android:layout_width="275dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="와우 개재밌어요 ㅇㅈ? ㅇㅇㅈ"
+            android:textColor="#2f3542"
+            android:textSize="12sp"
+            android:textStyle="normal"
+
+            app:layout_constraintStart_toStartOf="@+id/userName_textView"
+            app:layout_constraintTop_toBottomOf="@+id/writeTime_textView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

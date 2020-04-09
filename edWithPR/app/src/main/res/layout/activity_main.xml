@@ -11,8 +11,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/movieOrange"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#ffffff"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +58,7 @@
                     android:layout_weight="1">
 
                     <ImageView
-                        android:id="@+id/moiveGrade_imgView"
+                        android:id="@+id/movieGrade_imgView"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_marginStart="8dp"
@@ -129,6 +129,7 @@
                     </ImageButton>
 
                     <TextView
+                        android:inputType="number"
                         android:id="@+id/movieGoodCount_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
@@ -189,8 +190,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:accessibilityHeading="false"
-                    android:orientation="vertical"
                     android:gravity="center"
+                    android:orientation="vertical"
                     android:visibility="visible">
 
                     <TextView
@@ -204,9 +205,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textSize="16sp"
                         android:text="0위"
                         android:textColor="#2d2d2d"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -268,9 +269,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textSize="16sp"
                         android:text="000,000명"
                         android:textColor="#2d2d2d"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -428,7 +429,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/readMovieReview_recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="200dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:paddingBottom="16dp"
@@ -439,7 +440,7 @@
                 <Button
                     android:id="@+id/readAllMovieReview_button"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:background="#00ffffff"
                     android:text="모두보기"
                     android:textSize="14dp"
