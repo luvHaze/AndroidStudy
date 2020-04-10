@@ -1,5 +1,6 @@
 package luv.zoey.edwith_pr
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,9 @@ class ReviewAdapter(private val dataSet: MutableList<String>) :
 
         init {
             userName = v.findViewById<TextView>(R.id.userName_textView)
+
         }
+
 
     }
 

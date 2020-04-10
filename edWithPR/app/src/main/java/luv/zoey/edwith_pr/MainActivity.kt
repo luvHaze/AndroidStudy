@@ -1,8 +1,12 @@
 package luv.zoey.edwith_pr
 
+import android.content.DialogInterface
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         // 어뎁터로 보낼 데이터
         var dataSet : MutableList<String> = arrayListOf("가나다","마바사","사가라","안철수")
 
+
+
         // RecyclerView 사용법 4. 리싸이클러 뷰 방향설정
         val layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         readMovieReview_recyclerView.setLayoutManager(layoutManager)
@@ -28,6 +34,24 @@ class MainActivity : AppCompatActivity() {
         // RecyclerView 사용법 4. 리싸이클러 뷰에 어뎁터 설정해주기 끝.
         readMovieReview_recyclerView.adapter=ReviewAdapter(dataSet)
 
+        writeMovieReview_button.setOnClickListener {
+
+            val view = LayoutInflater.from(this).inflate(R.layout.alert_write_review,null)
+
+            AlertDialog.Builder(this)
+                .setView(view)
+                .setTitle(movieName_textview.text.toString())
+                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
+                    dialog.cancel()
+
+                })
+                .setPositiveButton("작성", DialogInterface.OnClickListener { dialog, which ->
+                    dialog.cancel()
+                })
+              .show()
+
+
+        }
 
         movieGood_Button.setOnClickListener {
             var goodCountTemp = movieGoodCount_textView.text.toString().toInt()
