@@ -55,6 +55,7 @@ class MemoListFragment : Fragment() {
                     intent.putExtra("MEMO_ID", it)
                     startActivity(intent)
                 }
+                
             }
             //MemoLiveData에 observe 함수를 통해 값이 변할 때 동작할 observer를 붙여준다.
             // (Observer 내에서는 adapter의 갱신코드를 호출

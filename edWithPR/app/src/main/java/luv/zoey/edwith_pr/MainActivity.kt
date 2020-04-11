@@ -1,6 +1,8 @@
 package luv.zoey.edwith_pr
 
+import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -36,21 +38,10 @@ class MainActivity : AppCompatActivity() {
 
         writeMovieReview_button.setOnClickListener {
 
-            val view = LayoutInflater.from(this).inflate(R.layout.alert_write_review,null)
+            val writeReview_Intent = Intent(this,ReviewWriteActivity::class.java)
+            writeReview_Intent.putExtra("movieName","잘 넘어옴 ㅋ")
 
-            AlertDialog.Builder(this)
-                .setView(view)
-                .setTitle(movieName_textview.text.toString())
-                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
-                    dialog.cancel()
-
-                })
-                .setPositiveButton("작성", DialogInterface.OnClickListener { dialog, which ->
-                    dialog.cancel()
-                })
-              .show()
-
-
+            startActivity(writeReview_Intent)
         }
 
         movieGood_Button.setOnClickListener {
@@ -118,4 +109,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+
 }
