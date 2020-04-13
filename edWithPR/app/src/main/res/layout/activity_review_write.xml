@@ -6,41 +6,86 @@
     android:layout_height="match_parent"
     tools:context=".ReviewWriteActivity">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="242dp"
-        android:layout_height="310dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_movieName"
-        tools:srcCompat="@drawable/kingdom_poster" />
-
-
     <TextView
-        android:id="@+id/detail_movieName"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
+        android:text="리뷰작성"
+        android:textColor="#2F3542"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="28dp"
+        android:background="@color/movieOrange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/movieName_textView_RWA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="영화명"
         android:textColor="#2F3542"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar_RWA" />
 
     <RatingBar
-        android:id="@+id/ratingBar"
+        android:id="@+id/ratingBar_RWA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:numStars="5"
+        android:progressTint="@color/movieOrange"
+        android:rating="4.5"
+        android:stepSize="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/writeReview_editText_RWA"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/movieOrange"
+        android:drawableTint="@color/movieOrange"
+        android:gravity="top"
+        android:hint="300자 이내로 입력해주세요"
+        android:padding="16dp"
+        android:textAlignment="gravity"
+        android:textColor="#ffffff"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movieName_textView_RWA" />
+
+    <Button
+        android:id="@+id/writeMovieReview_button_RWA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="#00ffffff"
+        android:text="작성하기"
+        android:textSize="14sp"
+        android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        android:numStars="5"
-        android:stepSize="0.5"
-        android:rating="4.5"
-        android:progressTint="@color/movieOrange"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/writeReview_editText_RWA" />
 </androidx.constraintlayout.widget.ConstraintLayout>
