@@ -12,8 +12,6 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
 
     // 어뎁터로 보낼 데이터
-    var dataName: MutableList<String> = arrayListOf()
-    var dataReview: MutableList<String> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,27 +24,26 @@ class MainActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         readMovieReview_recyclerView.setLayoutManager(layoutManager)
         val adapter : ReviewAdapter =  ReviewAdapter()
+
         // RecyclerView 사용법 4. 리싸이클러 뷰에 어뎁터 설정해주기 끝.
         readMovieReview_recyclerView.adapter = adapter
 
 
-        adapter.addItem(ReviewItem("1","rtert"))
-        adapter.addItem(ReviewItem("2","rtret"))
-        adapter.addItem(ReviewItem("3","fgggt"))
+
         if(intent.extras!=null) {
             var gettingReviewData: String = intent.extras?.get("reviewData").toString()
-
-
-            Toast.makeText(this, adapter.itemCount.toString(), Toast.LENGTH_LONG).show()
+            var gettingRatingData: Int = intent.extras?.get("reviewRating") as Int
+            adapter.addItem(ReviewItem(gettingRatingData,gettingReviewData))
+            Toast.makeText(this,adapter.items.size.toString(),Toast.LENGTH_SHORT).show()
         }
 
         writeMovieReview_button.setOnClickListener {
 
             val writeReview_Intent = Intent(this, ReviewWriteActivity::class.java)
             writeReview_Intent.putExtra("movieName", movieName_textview.text.toString())
-
             startActivity(writeReview_Intent)
         }
+
 
         movieGood_Button.setOnClickListener {
             var goodCountTemp = movieGoodCount_textView.text.toString().toInt()
@@ -111,6 +108,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
 
 
     }

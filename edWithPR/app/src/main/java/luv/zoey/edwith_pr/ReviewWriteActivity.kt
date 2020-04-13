@@ -18,9 +18,13 @@ class ReviewWriteActivity : AppCompatActivity() {
 
         writeMovieReview_button_RWA.setOnClickListener {
 
-            val intent2 = Intent(this, MainActivity::class.java)
-            intent2.putExtra("reviewData", writeReview_editText_RWA.text.toString())
-            startActivity(intent2)
+//
+
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("reviewData", writeReview_editText_RWA.text.toString())
+            intent.putExtra("reviewRating", ratingBar_RWA.numStars)
+            startActivity(intent)
+
         }
     }
 

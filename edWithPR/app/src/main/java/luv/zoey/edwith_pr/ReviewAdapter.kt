@@ -3,7 +3,9 @@ package luv.zoey.edwith_pr
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 // RecyclerView 사용법 3. 리싸이클러 어뎁터를 만들어 준다.
@@ -14,19 +16,21 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     // 뷰 홀더란 ?  - 화면에 표시할 아이템뷰를 저장하는 공간
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
-        var userName: TextView
+        var userRating: RatingBar
         var userReview: TextView
         init {
-            userName = v.findViewById<TextView>(R.id.userName_textView)
+            userRating = v.findViewById(R.id.ratingBar_RWA)
             userReview = v.findViewById(R.id.contentReview_textView)
+//            Toast.makeText(v.context,"Viewholder Open",Toast.LENGTH_LONG).show()
         }
+
     }
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         // Create a new view.
-        val item = LayoutInflater.from(parent.context)
+        var item = LayoutInflater.from(parent.context)
             .inflate(R.layout.movie_review_item, parent, false)
 
         return ViewHolder(item)
@@ -37,7 +41,7 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        holder.userName.text = items.get(position).name
+        holder.userRating.numStars = items.get(position).rating
         holder.userReview.text = items.get(position).content
     }
 
