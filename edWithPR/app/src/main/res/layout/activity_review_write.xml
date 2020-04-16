@@ -44,6 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ratingBar_RWA" />
 
     <RatingBar
+        android:isIndicator="false"
         android:id="@+id/ratingBar_RWA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

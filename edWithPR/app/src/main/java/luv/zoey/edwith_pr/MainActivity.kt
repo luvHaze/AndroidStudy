@@ -6,19 +6,18 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // 어뎁터로 보낼 데이터
 
-    var dataList: MutableList<ReviewItem> = mutableListOf()
+    var dataList: ArrayList<ReviewItem> = arrayListOf()
     val REQUEST_CONTENT: Int = 1010
     var isGoodButtonClicked = false
     var isBadButtonClicked = false
+    lateinit var reviewAdapter : ReviewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,20 +25,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         // RecyclerView 사용법 4. 리싸이클러 뷰 방향설정
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        readMovieReview_recyclerView.setLayoutManager(layoutManager)
+        readMovieReview_recyclerView.layoutManager = layoutManager
 
         // RecyclerView 사용법 4. 리싸이클러 뷰에 어뎁터 설정해주기 끝.
-
-
-
-        readMovieReview_recyclerView.adapter = ReviewAdapter(dataList)
-
-
-//        if (intent.extras != null) {
-//            var gettingReviewData: String = intent.extras?.getString("reviewData").toString()
-//            dataList.add(ReviewItem(gettingReviewData))
-//        }
-
+        reviewAdapter= ReviewAdapter(dataList)
+        readMovieReview_recyclerView.adapter = reviewAdapter
 
     }
 
@@ -48,10 +38,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         if (resultCode == Activity.RESULT_OK) {
 
-            var intentData = data?.extras?.getString("reviewData")
-            dataList.add(ReviewItem(intentData!!))
+            var contentData = data?.extras?.getString("reviewData")
+            var ratingData = data?.extras?.getFloat("ratingData")
+            dataList.add(ReviewItem(contentData!!,ratingData!!))
         }
-
+        movieScore_RatinBar.rating=reviewAdapter.reutrnRating()
+        Counter_movieScore.setText(reviewAdapter.reutrnRating().toString())
     }
 
     override fun onResume() {
@@ -67,6 +59,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 writeReview_Intent.putExtra("movieName", movieName_textview.text.toString())
                 startActivityForResult(writeReview_Intent, REQUEST_CONTENT)
 
+            }
+            R.id.readAllMovieReview_button ->{
+                val readAllReview_Intent = Intent(this,ReviewReadActivity::class.java)
+                readAllReview_Intent.putParcelableArrayListExtra("content",dataList)
+                startActivity(readAllReview_Intent)
             }
 
             R.id.movieGood_Button -> {
