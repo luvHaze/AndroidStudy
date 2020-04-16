@@ -1,5 +1,6 @@
 package luv.zoey.edwith_pr
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,12 +19,10 @@ class ReviewWriteActivity : AppCompatActivity() {
 
         writeMovieReview_button_RWA.setOnClickListener {
 
-//
-
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("reviewData", writeReview_editText_RWA.text.toString())
-            intent.putExtra("reviewRating", ratingBar_RWA.numStars)
-            startActivity(intent)
+            setResult(Activity.RESULT_OK,intent)
+            finish()
 
         }
     }
