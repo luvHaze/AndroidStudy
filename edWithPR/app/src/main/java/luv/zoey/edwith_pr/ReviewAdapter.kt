@@ -61,4 +61,5 @@ class ReviewAdapter(private var items: MutableList<ReviewItem>) :
         return sumRating/items.size
     }
 
+
 }
