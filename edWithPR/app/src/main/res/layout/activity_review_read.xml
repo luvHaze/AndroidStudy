@@ -6,11 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".Review.ReviewReadActivity">
 
-    <include
-        android:id="@+id/actionbar_readReview"
-        layout="@layout/action_bar_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/readReviewAll_RecyclerView"
@@ -20,5 +25,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actionbar_readReview" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
