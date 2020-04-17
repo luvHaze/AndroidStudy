@@ -1,6 +1,5 @@
-package luv.zoey.edwith_pr
+package luv.zoey.edwith_pr.Review
 
-import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 

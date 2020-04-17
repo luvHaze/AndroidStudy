@@ -1,4 +1,4 @@
-package luv.zoey.edwith_pr
+package luv.zoey.edwith_pr.Review
 
 import android.app.Activity
 import android.content.Intent
@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import luv.zoey.edwith_pr.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     val REQUEST_CONTENT: Int = 1010
     var isGoodButtonClicked = false
     var isBadButtonClicked = false
-    lateinit var reviewAdapter : ReviewAdapter
+    lateinit var reviewAdapter: ReviewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +29,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         readMovieReview_recyclerView.layoutManager = layoutManager
 
         // RecyclerView 사용법 4. 리싸이클러 뷰에 어뎁터 설정해주기 끝.
-        reviewAdapter= ReviewAdapter(dataList)
+        reviewAdapter =
+            ReviewAdapter(dataList)
         readMovieReview_recyclerView.adapter = reviewAdapter
 
     }
@@ -40,32 +42,36 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             var contentData = data?.extras?.getString("reviewData")
             var ratingData = data?.extras?.getFloat("ratingData")
-            dataList.add(ReviewItem(contentData!!,ratingData!!))
+            dataList.add(
+                ReviewItem(
+                    contentData!!,
+                    ratingData!!
+                )
+            )
         }
-        movieScore_RatinBar.rating=reviewAdapter.reutrnRating()
-        Counter_movieScore.setText(reviewAdapter.reutrnRating().toString())
+        movieScore_RatinBar.rating = reviewAdapter.reutrnRating()
+        Counter_movieScore.text = reviewAdapter.reutrnRating().toString()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
+    // OnClickListener 인터페이스를 적용
+    // onClick 메소드 안에 모든 버튼의 동작을 모아둔다.
     override fun onClick(v: View?) {
         when (v?.id) {
-
+            // 작성하기 버튼 눌렀을 시
             R.id.writeMovieReview_button -> {
                 val writeReview_Intent = Intent(this, ReviewWriteActivity::class.java)
                 writeReview_Intent.putExtra("movieName", movieName_textview.text.toString())
                 startActivityForResult(writeReview_Intent, REQUEST_CONTENT)
-
             }
-            R.id.readAllMovieReview_button ->{
-                val readAllReview_Intent = Intent(this,ReviewReadActivity::class.java)
-                readAllReview_Intent.putParcelableArrayListExtra("content",dataList)
+
+            // 모두보기 버튼 눌렀을 시
+            R.id.readAllMovieReview_button -> {
+                val readAllReview_Intent = Intent(this, ReviewReadActivity::class.java)
+                readAllReview_Intent.putParcelableArrayListExtra("content", dataList)
                 startActivity(readAllReview_Intent)
             }
 
+            //좋아요 버튼 눌렀을 시
             R.id.movieGood_Button -> {
                 var goodCountTemp = movieGoodCount_textView.text.toString().toInt()
                 var badCountTemp = movieBadCount_textView.text.toString().toInt()
@@ -95,6 +101,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
+            //싫어요 버튼 눌렀을 시
             R.id.movieBad_Button -> {
                 var goodCountTemp = movieGoodCount_textView.text.toString().toInt()
                 var badCountTemp = movieBadCount_textView.text.toString().toInt()

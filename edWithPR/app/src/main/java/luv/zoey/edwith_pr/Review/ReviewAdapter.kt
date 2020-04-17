@@ -1,4 +1,4 @@
-package luv.zoey.edwith_pr
+package luv.zoey.edwith_pr.Review
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import luv.zoey.edwith_pr.R
 
 // RecyclerView 사용법 3. 리싸이클러 어뎁터를 만들어 준다.
 class ReviewAdapter(private var items: MutableList<ReviewItem>) :
@@ -45,6 +46,10 @@ class ReviewAdapter(private var items: MutableList<ReviewItem>) :
         holder.userReview.setText(item.content)
         holder.ratingBar.setRating(item.rating)
 
+        // 각각의 아이템에 대한 클릭리스너는 여기로 해준다.
+        holder.userReview.setOnClickListener {
+            Toast.makeText(it.context, holder.adapterPosition.toString(), Toast.LENGTH_LONG).show()
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -58,7 +63,7 @@ class ReviewAdapter(private var items: MutableList<ReviewItem>) :
             sumRating += position.rating
         }
 
-        return sumRating/items.size
+        return sumRating / items.size
     }
 
 

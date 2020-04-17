@@ -1,11 +1,11 @@
-package luv.zoey.edwith_pr
+package luv.zoey.edwith_pr.Review
 
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_review_write.*
-import kotlin.random.Random
+import luv.zoey.edwith_pr.R
 
 class ReviewWriteActivity : AppCompatActivity() {
 

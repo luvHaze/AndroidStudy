@@ -6,4 +6,7 @@
         and typesetting industry. Lorem Ipsumhas been
         the industry"s standard dummy text ever since the containing Lorem
     </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

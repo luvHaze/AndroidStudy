@@ -1,12 +1,10 @@
-package luv.zoey.edwith_pr
+package luv.zoey.edwith_pr.Review
 
-import android.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_review_read.*
+import luv.zoey.edwith_pr.R
 
 class ReviewReadActivity : AppCompatActivity() {
 
@@ -18,8 +16,6 @@ class ReviewReadActivity : AppCompatActivity() {
         setContentView(R.layout.activity_review_read)
         setSupportActionBar(findViewById(R.id.toolbar2))
 
-        actionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE)
-
         // Main에서 받은 인텐트에서 데이터를 추출해 내고
         dataList= intent.extras?.getParcelableArrayList<ReviewItem>("content") as ArrayList<ReviewItem>
 
@@ -29,6 +25,7 @@ class ReviewReadActivity : AppCompatActivity() {
         readReviewAll_RecyclerView.layoutManager=layoutManager
 
         // 어뎁터 설정
-        readReviewAll_RecyclerView.adapter=ReviewAdapter(dataList)
+        readReviewAll_RecyclerView.adapter=
+            ReviewAdapter(dataList)
     }
 }
