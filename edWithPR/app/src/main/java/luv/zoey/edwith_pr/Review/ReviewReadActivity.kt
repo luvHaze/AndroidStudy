@@ -14,7 +14,7 @@ class ReviewReadActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review_read)
-        setSupportActionBar(findViewById(R.id.toolbar2))
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         // Main에서 받은 인텐트에서 데이터를 추출해 내고
         dataList= intent.extras?.getParcelableArrayList<ReviewItem>("content") as ArrayList<ReviewItem>

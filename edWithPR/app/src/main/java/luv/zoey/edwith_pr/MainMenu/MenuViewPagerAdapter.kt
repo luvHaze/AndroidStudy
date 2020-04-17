@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 
 const val MAX_PAGE = 5
 
-class MenuViewPagerAdapter(var fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class MenuViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
     var items: ArrayList<Fragment> = arrayListOf()
 
