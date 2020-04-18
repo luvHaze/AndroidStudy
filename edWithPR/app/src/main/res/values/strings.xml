@@ -7,6 +7,8 @@
         the industry"s standard dummy text ever since the containing Lorem
     </string>
 
+    <string name="opening">open</string>
+    <string name="close">close</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.Toast
 import android.widget.Toolbar
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -37,6 +38,10 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val action_bar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.menu_toolbar)
         setSupportActionBar(findViewById(R.id.menu_toolbar)) // 액션바 등록
 
+        val toggle = ActionBarDrawerToggle(this,drawer,R.string.opening,R.string.close)
+        drawer.addDrawerListener(toggle)
+
+        toggle.syncState()
 //        activity_menu 레이아웃은 드로어 레이아웃 메인
 //        child 로는 툴바가 들어갈 LinearLayout과
 //        액션바를 눌렀을때 띄워질 네비게이션 뷰가 있다.
