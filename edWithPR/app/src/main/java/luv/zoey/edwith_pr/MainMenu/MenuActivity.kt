@@ -56,11 +56,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val viewPagerAdapter = MenuViewPagerAdapter(supportFragmentManager).apply {
             addItem(TestFragment())
             addItem(TestFragment2())
+            addItem(TestFragment3())
         }
 
         //프래그먼트를 추가해준 뒤에는 뷰페이저에 어뎁터를 등록해준다.
         mainmenu_ViewPager.adapter = viewPagerAdapter
-
 
     }
 
