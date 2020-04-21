@@ -30,12 +30,12 @@ import kotlin.math.log
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    // API 로 부터 받아온 MovieList들을 담기 위한 배열
+    var movieList: ArrayList<MovieListDTO> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
-
-        val action_bar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.menu_toolbar)
         setSupportActionBar(findViewById(R.id.menu_toolbar)) // 액션바 등록
 
 /*      activity_menu 레이아웃은 드로어 레이아웃이 메인레이아웃이며
@@ -55,9 +55,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //뷰페이저 어뎁터 객체를 만들고 addItem으로 프래그먼트를 추가해준다
         val viewPagerAdapter = MenuViewPagerAdapter(supportFragmentManager).apply {
 
-            for (i in 1..5){
-                addItem(TestFragment())
+            //TODO 이곳에서 API로 가져온 데이타들을 MovieListDTO타입의 리스트에 저장한 후
+            //     for문으로 빼주면서 가져온 개수만큼 프래그먼트 생성해준다.
+            movieList.forEach {
+                addItem(TestFragment(it))
             }
+
 
         }
 
@@ -66,7 +69,8 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    //네비게이션 메뉴 아이템 선택 시 발생하는 콜백메서드
+
+    //네비게이션 메뉴 아이템 선택 시 발생하는 콜백메서드 (미구현)
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.movieList_item -> {
