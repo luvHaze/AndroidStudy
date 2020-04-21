@@ -54,9 +54,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //뷰페이저 어뎁터 객체를 만들고 addItem으로 프래그먼트를 추가해준다
         val viewPagerAdapter = MenuViewPagerAdapter(supportFragmentManager).apply {
-            addItem(TestFragment())
-            addItem(TestFragment2())
-            addItem(TestFragment3())
+
+            for (i in 1..5){
+                addItem(TestFragment())
+            }
+
         }
 
         //프래그먼트를 추가해준 뒤에는 뷰페이저에 어뎁터를 등록해준다.

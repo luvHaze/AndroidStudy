@@ -15,13 +15,16 @@ import luv.zoey.edwith_pr.Review.MainActivity
 /**
  * A simple [Fragment] subclass.
  */
-class TestFragment : Fragment() {
+class TestFragment(movieListDTO: MovieListDTO) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
+        mainmenu_moviePicture
+
         return inflater.inflate(R.layout.fragment_test, container, false)
     }
 
@@ -31,8 +34,6 @@ class TestFragment : Fragment() {
         viewDetail_TextView.setOnClickListener {
             var intent =Intent(view.context,MainActivity::class.java)
             startActivity(intent)
-
-
         }
     }
 }

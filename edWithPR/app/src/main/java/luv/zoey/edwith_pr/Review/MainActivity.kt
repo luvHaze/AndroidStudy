@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    // finish()가 전달 되어야지 실행이 된다.
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
