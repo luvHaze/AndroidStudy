@@ -1,4 +1,4 @@
-package luv.zoey.edwith_pr.MainMenu
+package luv.zoey.edwith_pr.MainMenu.Data
 
 data class Movie (
     var id: Int,                        // ID

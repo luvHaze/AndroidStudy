@@ -14,6 +14,8 @@ import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.action_bar.*
 import kotlinx.android.synthetic.main.activity_menu.*
+import luv.zoey.edwith_pr.MainMenu.Data.Movie
+import luv.zoey.edwith_pr.MainMenu.Data.MovieList
 import luv.zoey.edwith_pr.R
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -89,7 +91,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.d("data", movie.toString())
 
             // 어뎁터에 하나씩 등록을 해준다.
-            viewPagerAdapter.addItem(TestFragment(movie))
+            viewPagerAdapter.addItem(MovieFragment(movie))
         }
 
         //만든 어뎁터를 위젯에 등록해주면 어뎁터에 넣어주었던 프레그먼트들이 나오기 시작한다.

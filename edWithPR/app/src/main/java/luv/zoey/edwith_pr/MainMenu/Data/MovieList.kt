@@ -1,4 +1,6 @@
-package luv.zoey.edwith_pr.MainMenu
+package luv.zoey.edwith_pr.MainMenu.Data
+
+import luv.zoey.edwith_pr.MainMenu.Data.Movie
 
 data class MovieList(
     var message: String,
