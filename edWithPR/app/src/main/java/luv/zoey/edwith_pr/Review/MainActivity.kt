@@ -13,6 +13,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import luv.zoey.edwith_pr.*
@@ -30,9 +31,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val REQUEST_CONTENT: Int = 1010
     private var isGoodButtonClicked = false
     private var isBadButtonClicked = false
-    private lateinit var dataList: ArrayList<ReviewItem>
+    private var dataList: ArrayList<ReviewItem> = arrayListOf()
     private lateinit var reviewAdapter: ReviewAdapter
-    private lateinit var movieInfo: MovieDetailDTO
+    private lateinit var movieInfo: ArrayList<MovieDetailDTO>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +46,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         readMovieReview_recyclerView.layoutManager = layoutManager
 
         // RecyclerView 사용법 4. 리싸이클러 뷰에 어뎁터 설정해주기 끝.
-        reviewAdapter =
-            ReviewAdapter(dataList)
+        reviewAdapter = ReviewAdapter(dataList)
         readMovieReview_recyclerView.adapter = reviewAdapter
 
         var movie_id: String = intent.extras!!.getString("moive_id").toString()
@@ -57,7 +57,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun sendRequest(movieId: String) {
 
-        var url = "${R.string.movieDetailRequest}${movieId}"
+        //var url = "${R.string.movieDetailRequest}${movieId}"
+        var url = "http://boostcourse-appapi.connect.or.kr:10000/movie/readMovie?id=1"
 
         try {
 
@@ -87,9 +88,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun proccessResponse(response: String?) {
         var gson = Gson()
         var processData: ResponseDTO = gson.fromJson(response, ResponseDTO::class.java)
-
+        //TODO 고쳐야함
         movieInfo = processData.result
+        pageSetUp()
+    }
 
+    private fun pageSetUp() {
+
+        Glide.with(this).load(movieInfo[0].image).into(moviePicture_imgview)
     }
 
     // finish()가 전달 되어야지 실행이 된다.

@@ -4,5 +4,5 @@ data class ResponseDTO (
     var message: String,
     var code: Int,
     var resultType: String,
-    var result : MovieDetailDTO
+    var result : ArrayList<MovieDetailDTO>
 )
