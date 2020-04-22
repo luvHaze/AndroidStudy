@@ -10,8 +10,8 @@ class MovieDetailDTO(
     var reservation_rate : Float,
     var reservation_grade : Int,
     var grade : Int,
-    var thumb : String,
-    var image : String,
+    var thumb : String,                 // 썸네일 URL
+    var image : String,                 // 이미지 URL
     var photos : String,
     var videos : String,
     var outlinks : String,

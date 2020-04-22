@@ -12,3 +12,5 @@ data class ReviewItem(
     var content : String,
     var rating : Float
 ) : Parcelable
+
+// * ParcelableArrayListExtra 의 ReviewItem 타입으로 만들기 위함이다.

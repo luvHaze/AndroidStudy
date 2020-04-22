@@ -1,42 +1,37 @@
 package luv.zoey.edwith_pr.MainMenu
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
-import android.view.Window
-import android.widget.LinearLayout
 import android.widget.Toast
-import android.widget.Toolbar
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.graphics.drawable.toDrawable
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.internal.NavigationMenu
-import com.google.android.material.internal.NavigationMenuView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.material.navigation.NavigationView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.action_bar.*
-import kotlinx.android.synthetic.main.action_bar.view.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.activity_menu.*
 import luv.zoey.edwith_pr.R
-import kotlin.math.log
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     // API 로 부터 받아온 MovieList들을 담기 위한 배열
-    var movieList: ArrayList<MovieListDTO> = arrayListOf()
+    var movieList: ArrayList<Movie> = arrayListOf()
+
+    //뷰페이저 어뎁터 객체를 만들고 addItem으로 프래그먼트를 추가해준다
+    val viewPagerAdapter = MenuViewPagerAdapter(supportFragmentManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         setSupportActionBar(findViewById(R.id.menu_toolbar)) // 액션바 등록
+
+        // volley 0. request들을 보관해둘 RequestQueue 객체를 먼저 등록해준다.
+        AppHelper.requestQueue = Volley.newRequestQueue(applicationContext)
+        requestData()
 
 /*      activity_menu 레이아웃은 드로어 레이아웃이 메인레이아웃이며
         child 로는 툴바가 들어갈 LinearLayout과
@@ -52,19 +47,52 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
 
-        //뷰페이저 어뎁터 객체를 만들고 addItem으로 프래그먼트를 추가해준다
-        val viewPagerAdapter = MenuViewPagerAdapter(supportFragmentManager).apply {
+    }
 
-            //TODO 이곳에서 API로 가져온 데이타들을 MovieListDTO타입의 리스트에 저장한 후
-            //     for문으로 빼주면서 가져온 개수만큼 프래그먼트 생성해준다.
-            movieList.forEach {
-                addItem(TestFragment(it))
+    private fun requestData() {
+
+        val url = "http://boostcourse-appapi.connect.or.kr:10000/movie/readMovieList?type=1"
+
+        // volley 1. 하나의 리퀘스트를 만들고
+        var request = StringRequest(
+            Request.Method.GET, // 어떤 메소드를 사용할지
+            url,
+            Response.Listener {
+                // it -> respose 응답받은 DATA 를 뜻함
+                processResponse(it)
+                Log.d("success", it)
+//
+            },
+            Response.ErrorListener {
+
             }
 
+        )
+        // 이전 결과 있더라도 새로 추가해준다.
+        request.setShouldCache(false)
+        // volley 2. 만든 리퀘스트를 리퀘스트 큐에 넣어준다.
+        AppHelper.requestQueue.add(request)
 
+    }
+
+    private fun processResponse(responseData: String?) {
+
+        val gson = Gson()
+        var receiveData: MovieList = gson.fromJson(responseData, MovieList::class.java)
+        // response 받은 데이타를 MoiveListDTO 형식으로 추출 및 저장
+
+
+        for (movie in receiveData.result) {
+            // receiveData 의 영화들의 정보가 담긴 result 리스트에서 
+            // 영화를 하나씩 빼서 Movie타입의  movieList에 넣어준다.
+            movieList.add(movie)
+            Log.d("data", movie.toString())
+
+            // 어뎁터에 하나씩 등록을 해준다.
+            viewPagerAdapter.addItem(TestFragment(movie))
         }
 
-        //프래그먼트를 추가해준 뒤에는 뷰페이저에 어뎁터를 등록해준다.
+        //만든 어뎁터를 위젯에 등록해주면 어뎁터에 넣어주었던 프레그먼트들이 나오기 시작한다.
         mainmenu_ViewPager.adapter = viewPagerAdapter
 
     }
