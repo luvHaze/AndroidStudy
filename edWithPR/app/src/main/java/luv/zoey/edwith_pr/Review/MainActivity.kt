@@ -5,24 +5,40 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import luv.zoey.edwith_pr.*
+import luv.zoey.edwith_pr.MainMenu.AppHelper
+import luv.zoey.edwith_pr.Review.Data.MovieDetailDTO
+import luv.zoey.edwith_pr.Review.Data.ResponseDTO
+import java.lang.Exception
+import java.net.URL
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // 어뎁터로 보낼 데이터
 
-    var dataList: ArrayList<ReviewItem> = arrayListOf()
-    val REQUEST_CONTENT: Int = 1010
-    var isGoodButtonClicked = false
-    var isBadButtonClicked = false
-    lateinit var reviewAdapter: ReviewAdapter
+
+    private val REQUEST_CONTENT: Int = 1010
+    private var isGoodButtonClicked = false
+    private var isBadButtonClicked = false
+    private lateinit var dataList: ArrayList<ReviewItem>
+    private lateinit var reviewAdapter: ReviewAdapter
+    private lateinit var movieInfo: MovieDetailDTO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        var requestQueue = Volley.newRequestQueue(applicationContext)
 
         // RecyclerView 사용법 4. 리싸이클러 뷰 방향설정
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -32,6 +48,47 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         reviewAdapter =
             ReviewAdapter(dataList)
         readMovieReview_recyclerView.adapter = reviewAdapter
+
+        var movie_id: String = intent.extras!!.getString("moive_id").toString()
+
+        sendRequest(movie_id)
+
+    }
+
+    private fun sendRequest(movieId: String) {
+
+        var url = "${R.string.movieDetailRequest}${movieId}"
+
+        try {
+
+            var request = StringRequest(
+                Request.Method.GET,
+                url,
+                Response.Listener {
+
+                    proccessResponse(it)
+                },
+                Response.ErrorListener {
+                    Log.d("Error_RequestDetail", it.toString())
+                }
+            )
+
+            //이전 결과 있더라도 새로 추가해주는 코드
+            request.setShouldCache(false)
+            // 만든 리퀘스트를 리퀘스트 큐에 넣어준다.
+            AppHelper.requestQueue.add(request)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun proccessResponse(response: String?) {
+        var gson = Gson()
+        var processData: ResponseDTO = gson.fromJson(response, ResponseDTO::class.java)
+
+        movieInfo = processData.result
 
     }
 

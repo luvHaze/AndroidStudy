@@ -21,10 +21,10 @@ import luv.zoey.edwith_pr.R
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     // API 로 부터 받아온 MovieList들을 담기 위한 배열
-    var movieList: ArrayList<Movie> = arrayListOf()
+    private var movieList: ArrayList<Movie> = arrayListOf()
 
     //뷰페이저 어뎁터 객체를 만들고 addItem으로 프래그먼트를 추가해준다
-    val viewPagerAdapter = MenuViewPagerAdapter(supportFragmentManager)
+    private val viewPagerAdapter = MenuViewPagerAdapter(supportFragmentManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +51,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+    // volley로 API 데이터 요청하는 메소드
     private fun requestData() {
 
         val url = "http://boostcourse-appapi.connect.or.kr:10000/movie/readMovieList?type=1"
@@ -61,12 +62,13 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             url,
             Response.Listener {
                 // it -> respose 응답받은 DATA 를 뜻함
-                processResponse(it)
+
+                processResponse(it)  // 응답받은 데이터를 Gson으로 가공
                 Log.d("success", it)
 //
             },
             Response.ErrorListener {
-
+                Log.d("Error_RequestMainMenu", it.toString())
             }
 
         )
@@ -77,12 +79,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+    // volley 에서 응답을 받은경우 Gson으로 가공해주는 메소드
     private fun processResponse(responseData: String?) {
 
         val gson = Gson()
         var receiveData: MovieList = gson.fromJson(responseData, MovieList::class.java)
         // response 받은 데이타를 MoiveListDTO 형식으로 추출 및 저장
-
 
         for (movie in receiveData.result) {
             // receiveData 의 영화들의 정보가 담긴 result 리스트에서 

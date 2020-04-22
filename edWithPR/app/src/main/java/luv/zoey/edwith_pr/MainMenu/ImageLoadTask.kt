@@ -8,7 +8,12 @@ import com.bumptech.glide.Glide
 import java.lang.Exception
 import java.net.URL
 
-class ImageLoadTask(var urlStr: String, var imgView: ImageView) : AsyncTask<Unit, Unit, Bitmap>() {
+class ImageLoadTask(var urlStr: String, var imgView: ImageView)
+    : AsyncTask<Unit, Unit, Bitmap>() {
+    //AsyncTask<[1],[2],[3]>
+    // [1]. 메인 스레드에서 생성된 스레드에게 보내는 인자의 자료형을 정의한다.
+    // [2]. 생성된 스레드에서 갱신 작업을 할때, 메인 스레드에게 보내는 인자의 자료형을 정의한다.
+    // [3]. 파란색은 생성된 스레드에서 작업 종료 후의 처리를 할때, 메인 스레드에게 보내는 인자의 자료형을 정의한다.
 
 
     // 스레드가 시작하기 전에 수행할 작업(메인 스레드)

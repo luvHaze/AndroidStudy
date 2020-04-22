@@ -44,20 +44,25 @@ class MovieFragment(private var movie: Movie) : Fragment() {
             startActivity(intent)
         }
 
-        /*     # AsyncTask 를 이용해서 이미지를 가져오는 법
+        /*     # AsyncTask 를 이용해서 이미지를 가져오는 법 (Glide 사용하기로 함)
         imgLoadTask=ImageLoadTask(movie.image,menuFragment_moviePicture)
         imgLoadTask.execute()
         */
 
-        // Glide를 이용해서 이미지를 가져오는 법
+        // Glide를 이용해서 이미지를 가져온다.
         Glide.with(view.context).load(movie.image).into(menuFragment_moviePicture)
         menuFragment_movieTitle.text = movie.title
         menuFragment_GradeRate.text =
             "${movie.grade}세 이용가 | 예매율 : ${movie.reservation_rate}% "
+
+        viewDetail_TextView.setOnClickListener {
+
+            var intent = Intent(view.context,MainActivity::class.java)
+            intent.putExtra("movie_id",movie.id)
+            startActivity(intent)
+
+        }
     }
 
-    override fun onStart() {
-        super.onStart()
 
-    }
 }
