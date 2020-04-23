@@ -51,9 +51,10 @@
 
                     <ImageView
                         android:id="@+id/movieGrade_imgView"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_marginStart="8dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="6dp"
                         android:src="@mipmap/ic_launcher"
                         app:layout_constraintStart_toEndOf="@+id/movieName_textview"
                         app:layout_constraintTop_toTopOf="@+id/movieName_textview" />
@@ -125,12 +126,12 @@
                         android:id="@+id/movieGoodCount_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="6dp"
                         android:gravity="center"
                         android:inputType="number"
                         android:text="0"
                         android:textColor="#2F3542"
-                        android:textSize="18dp"
+                        android:textSize="14sp"
                         android:textStyle="normal"
                         app:layout_constraintStart_toEndOf="@+id/movieGood_Button"
                         app:layout_constraintTop_toTopOf="@+id/movieGood_Button">
@@ -141,7 +142,7 @@
                         android:id="@+id/movieBad_Button"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="12dp"
                         android:background="#ffffff"
                         android:onClick="onClick"
                         android:src="@drawable/ic_thumb_down_black_24dp"
@@ -155,11 +156,11 @@
                         android:id="@+id/movieBadCount_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="6dp"
                         android:gravity="center"
                         android:text="0"
                         android:textColor="#2F3542"
-                        android:textSize="18dp"
+                        android:textSize="14sp"
                         android:textStyle="normal"
                         app:layout_constraintStart_toEndOf="@+id/movieBad_Button"
                         app:layout_constraintTop_toTopOf="@+id/movieBad_Button">
@@ -238,12 +239,13 @@
 
 
                     <TextView
-                        android:id="@+id/Counter_movieScore"
+                        android:id="@+id/movieScore_TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0.0"
                         android:textColor="#2F3542"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
+                        android:layout_marginTop="6sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 

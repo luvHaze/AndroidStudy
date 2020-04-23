@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -21,7 +20,6 @@ import luv.zoey.edwith_pr.MainMenu.AppHelper
 import luv.zoey.edwith_pr.Review.Data.MovieDetailDTO
 import luv.zoey.edwith_pr.Review.Data.ResponseDTO
 import java.lang.Exception
-import java.net.URL
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -33,13 +31,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var isBadButtonClicked = false
     private var dataList: ArrayList<ReviewItem> = arrayListOf()
     private lateinit var reviewAdapter: ReviewAdapter
-    private lateinit var movieInfo: ArrayList<MovieDetailDTO>
+    private lateinit var movieInfo: MovieDetailDTO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var requestQueue = Volley.newRequestQueue(applicationContext)
+        //var requestQueue = Volley.newRequestQueue(applicationContext)
 
         // RecyclerView 사용법 4. 리싸이클러 뷰 방향설정
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -49,24 +47,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         reviewAdapter = ReviewAdapter(dataList)
         readMovieReview_recyclerView.adapter = reviewAdapter
 
-        var movie_id: String = intent.extras!!.getString("moive_id").toString()
+        var movieID = intent.extras!!.getInt("movieID")
 
-        sendRequest(movie_id)
+        sendRequest(movieID)
 
     }
 
-    private fun sendRequest(movieId: String) {
+    private fun sendRequest(movieId: Int) {
 
-        //var url = "${R.string.movieDetailRequest}${movieId}"
-        var url = "http://boostcourse-appapi.connect.or.kr:10000/movie/readMovie?id=1"
-
+        var url = "http://boostcourse-appapi.connect.or.kr:10000/movie/readMovie?id=$movieId"
+        Log.d("url",url)
         try {
 
             var request = StringRequest(
                 Request.Method.GET,
                 url,
                 Response.Listener {
-
                     proccessResponse(it)
                 },
                 Response.ErrorListener {
@@ -86,16 +82,36 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun proccessResponse(response: String?) {
-        var gson = Gson()
-        var processData: ResponseDTO = gson.fromJson(response, ResponseDTO::class.java)
-        //TODO 고쳐야함
-        movieInfo = processData.result
+        val gson = Gson()
+        val processData: ResponseDTO = gson.fromJson(response, ResponseDTO::class.java)
+        Log.d("data for Detail ", processData.toString())
+
+        movieInfo = processData.result[0]
         pageSetUp()
     }
 
     private fun pageSetUp() {
 
-        Glide.with(this).load(movieInfo[0].image).into(moviePicture_imgview)
+        Glide.with(this).load(movieInfo.image).into(moviePicture_imgview)
+        movieName_textview.text = movieInfo.title
+        when (movieInfo.grade){
+            12 -> movieGrade_imgView.setImageResource(R.drawable.ic_12)
+            15 -> movieGrade_imgView.setImageResource(R.drawable.ic_15)
+            19 -> movieGrade_imgView.setImageResource(R.drawable.ic_19)
+        }
+        movieDay_textview.text = movieInfo.date
+        movieType_textview.text = movieInfo.genre
+        movieTime_textview.text = "${movieInfo.duration.toString()}분"
+        movieGoodCount_textView.text = movieInfo.like.toString()
+        movieBadCount_textView.text = movieInfo.dislike.toString()
+        movieRating_textView.text = movieInfo.reservation_grade.toString()+"위"
+        movieScore_RatinBar.rating = movieInfo.user_rating
+        movieScore_TextView.text=movieInfo.user_rating.toString()
+        movieCountPeople_textView.text =movieInfo.audience.toString()+"명"
+        movieStory_textview.text=movieInfo.synopsis
+        movieDirector_textView.text=movieInfo.director
+        movieActor_textView.text=movieInfo.actor
+
     }
 
     // finish()가 전달 되어야지 실행이 된다.
@@ -114,7 +130,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             )
         }
         movieScore_RatinBar.rating = reviewAdapter.reutrnRating()
-        Counter_movieScore.text = reviewAdapter.reutrnRating().toString()
+        movieScore_TextView.text = reviewAdapter.reutrnRating().toString()
     }
 
     // OnClickListener 인터페이스를 적용

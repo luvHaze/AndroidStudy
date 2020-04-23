@@ -58,7 +58,7 @@ class MovieFragment(private var movie: Movie) : Fragment() {
         viewDetail_TextView.setOnClickListener {
 
             var intent = Intent(view.context,MainActivity::class.java)
-            intent.putExtra("movie_id",movie.id)
+            intent.putExtra("movieID",movie.id)
             startActivity(intent)
 
         }
