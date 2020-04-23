@@ -1,23 +1,19 @@
 package luv.zoey.edwith_pr.MainMenu
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_movie.*
 import luv.zoey.edwith_pr.MainMenu.Data.Movie
 
 import luv.zoey.edwith_pr.R
-import luv.zoey.edwith_pr.Review.MainActivity
+import luv.zoey.edwith_pr.MovieDetail.MainActivity
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class MovieFragment(private var movie: Movie) : Fragment() {
 
     lateinit var imgLoadTask : ImageLoadTask

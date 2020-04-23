@@ -1,4 +1,4 @@
-package luv.zoey.edwith_pr.Review
+package luv.zoey.edwith_pr.MovieDetail
 
 import android.app.Activity
 import android.content.Intent
@@ -11,69 +11,82 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import luv.zoey.edwith_pr.*
 import luv.zoey.edwith_pr.MainMenu.AppHelper
-import luv.zoey.edwith_pr.Review.Data.MovieDetailDTO
-import luv.zoey.edwith_pr.Review.Data.ResponseDTO
+import luv.zoey.edwith_pr.MovieDetail.Data.MovieDetailDTO
+import luv.zoey.edwith_pr.MovieDetail.Data.ResponseDTO
+import luv.zoey.edwith_pr.MovieDetail.ReviewData.MovieReviewDTO
+import luv.zoey.edwith_pr.MovieDetail.ReviewData.ResponseReviewDTO
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    // 어뎁터로 보낼 데이터
-
-
-    private val REQUEST_CONTENT: Int = 1010
+    private var movieID: Int = 0
+    private val WRITE_CONTENT: Int = 2020
     private var isGoodButtonClicked = false
     private var isBadButtonClicked = false
-    private var dataList: ArrayList<ReviewItem> = arrayListOf()
     private lateinit var reviewAdapter: ReviewAdapter
     private lateinit var movieInfo: MovieDetailDTO
+    private var movieReviewList: ArrayList<MovieReviewDTO> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //var requestQueue = Volley.newRequestQueue(applicationContext)
+        // 메인메뉴 인텐트에서 ID부터 받아온다.
+        movieID = intent.extras!!.getInt("movieID")
+        sendRequest(movieID)
 
         // RecyclerView 사용법 4. 리싸이클러 뷰 방향설정
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         readMovieReview_recyclerView.layoutManager = layoutManager
 
-        // RecyclerView 사용법 4. 리싸이클러 뷰에 어뎁터 설정해주기 끝.
-        reviewAdapter = ReviewAdapter(dataList)
-        readMovieReview_recyclerView.adapter = reviewAdapter
-
-        var movieID = intent.extras!!.getInt("movieID")
-
-        sendRequest(movieID)
+        Log.d("movieReviewList", movieReviewList.toString())
 
     }
 
     private fun sendRequest(movieId: Int) {
 
-        var url = "http://boostcourse-appapi.connect.or.kr:10000/movie/readMovie?id=$movieId"
-        Log.d("url",url)
+        var movieInfoURL =
+            "http://boostcourse-appapi.connect.or.kr:10000/movie/readMovie?id=$movieId"
+        var movieReviewURL =
+            "http://boostcourse-appapi.connect.or.kr:10000/movie/readCommentList?id=$movieId"
+
+        Log.d("url", movieInfoURL)
         try {
 
-            var request = StringRequest(
+            var requestMovieInfo = StringRequest(
                 Request.Method.GET,
-                url,
+                movieInfoURL,
                 Response.Listener {
-                    proccessResponse(it)
+                    movieDataResponse(it)
                 },
                 Response.ErrorListener {
                     Log.d("Error_RequestDetail", it.toString())
                 }
             )
 
+            var requestReview = StringRequest(
+                Request.Method.GET,
+                movieReviewURL,
+                Response.Listener {
+                    movieReviewResponse(it)
+                },
+                Response.ErrorListener {
+                    Log.d("Error_RequestDetail", it.toString())
+                }
+
+            )
+
             //이전 결과 있더라도 새로 추가해주는 코드
-            request.setShouldCache(false)
+            requestMovieInfo.setShouldCache(false)
+            requestReview.setShouldCache(false)
             // 만든 리퀘스트를 리퀘스트 큐에 넣어준다.
-            AppHelper.requestQueue.add(request)
+            AppHelper.requestQueue.add(requestMovieInfo)
+            AppHelper.requestQueue.add(requestReview)
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -81,20 +94,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    private fun proccessResponse(response: String?) {
+    private fun movieDataResponse(response: String?) {
         val gson = Gson()
-        val processData: ResponseDTO = gson.fromJson(response, ResponseDTO::class.java)
-        Log.d("data for Detail ", processData.toString())
+        val processData = gson.fromJson(response, ResponseDTO::class.java)
 
         movieInfo = processData.result[0]
-        pageSetUp()
+        movieDataResponsePageSetting()
     }
 
-    private fun pageSetUp() {
+    private fun movieDataResponsePageSetting() {
 
         Glide.with(this).load(movieInfo.image).into(moviePicture_imgview)
         movieName_textview.text = movieInfo.title
-        when (movieInfo.grade){
+        when (movieInfo.grade) {
             12 -> movieGrade_imgView.setImageResource(R.drawable.ic_12)
             15 -> movieGrade_imgView.setImageResource(R.drawable.ic_15)
             19 -> movieGrade_imgView.setImageResource(R.drawable.ic_19)
@@ -104,14 +116,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         movieTime_textview.text = "${movieInfo.duration.toString()}분"
         movieGoodCount_textView.text = movieInfo.like.toString()
         movieBadCount_textView.text = movieInfo.dislike.toString()
-        movieRating_textView.text = movieInfo.reservation_grade.toString()+"위"
+        movieRating_textView.text = movieInfo.reservation_grade.toString() + "위"
         movieScore_RatinBar.rating = movieInfo.user_rating
-        movieScore_TextView.text=movieInfo.user_rating.toString()
-        movieCountPeople_textView.text =movieInfo.audience.toString()+"명"
-        movieStory_textview.text=movieInfo.synopsis
-        movieDirector_textView.text=movieInfo.director
-        movieActor_textView.text=movieInfo.actor
+        movieScore_TextView.text = movieInfo.user_rating.toString()
+        movieCountPeople_textView.text = movieInfo.audience.toString() + "명"
+        movieStory_textview.text = movieInfo.synopsis
+        movieDirector_textView.text = movieInfo.director
+        movieActor_textView.text = movieInfo.actor
 
+    }
+
+    private fun movieReviewResponse(response: String?) {
+        val gson = Gson()
+        var processData = gson.fromJson(response, ResponseReviewDTO::class.java)
+
+        processData.result.forEach {
+            movieReviewList.add(it)
+        }
+
+        // 리싸이클러 뷰에 어뎁터 설정해주기
+        reviewAdapter = ReviewAdapter(movieReviewList)
+        readMovieReview_recyclerView.adapter = reviewAdapter
     }
 
     // finish()가 전달 되어야지 실행이 된다.
@@ -120,14 +145,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         if (resultCode == Activity.RESULT_OK) {
 
-            var contentData = data?.extras?.getString("reviewData")
-            var ratingData = data?.extras?.getFloat("ratingData")
-            dataList.add(
-                ReviewItem(
-                    contentData!!,
-                    ratingData!!
-                )
-            )
+            when (requestCode) {
+
+                WRITE_CONTENT -> {
+
+                    var reviewDTO: MovieReviewDTO
+                    reviewDTO = data?.extras?.get("objReview") as MovieReviewDTO
+                    movieReviewList.add(reviewDTO)
+                    Log.d("checkOBJ", reviewDTO.toString())
+                }
+
+            }
+
         }
         movieScore_RatinBar.rating = reviewAdapter.reutrnRating()
         movieScore_TextView.text = reviewAdapter.reutrnRating().toString()
@@ -141,13 +170,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.writeMovieReview_button -> {
                 val writeReview_Intent = Intent(this, ReviewWriteActivity::class.java)
                 writeReview_Intent.putExtra("movieName", movieName_textview.text.toString())
-                startActivityForResult(writeReview_Intent, REQUEST_CONTENT)
+                startActivityForResult(writeReview_Intent, WRITE_CONTENT)
             }
 
             // 모두보기 버튼 눌렀을 시
             R.id.readAllMovieReview_button -> {
                 val readAllReview_Intent = Intent(this, ReviewReadActivity::class.java)
-                readAllReview_Intent.putParcelableArrayListExtra("content", dataList)
+                readAllReview_Intent.putExtra("MovieID",movieReviewList)
                 startActivity(readAllReview_Intent)
             }
 

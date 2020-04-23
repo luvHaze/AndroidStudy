@@ -20,9 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Review.ReviewReadActivity" />
-        <activity android:name=".Review.ReviewWriteActivity" />
-        <activity android:name=".Review.MainActivity">
+        <activity android:name=".MovieDetail.ReviewReadActivity" />
+        <activity android:name=".MovieDetail.ReviewWriteActivity" />
+        <activity android:name=".MovieDetail.MainActivity">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 

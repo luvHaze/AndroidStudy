@@ -1,28 +1,29 @@
-package luv.zoey.edwith_pr.Review
+package luv.zoey.edwith_pr.MovieDetail
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import luv.zoey.edwith_pr.MovieDetail.ReviewData.MovieReviewDTO
 import luv.zoey.edwith_pr.R
 
 // RecyclerView 사용법 3. 리싸이클러 어뎁터를 만들어 준다.
-class ReviewAdapter(private var items: MutableList<ReviewItem>) :
+class ReviewAdapter(private var items: ArrayList<MovieReviewDTO>) :
     RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
 
     // 뷰 홀더란 ?  - 화면에 표시할 아이템뷰를 저장하는 공간
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
-        var userReview: TextView
-        var ratingBar: RatingBar
-
-        init {
-            userReview = v.findViewById(R.id.contentReview_textView)
-            ratingBar = v.findViewById(R.id.userRating_ratingBar)
-        }
+        var contents: TextView = v.findViewById(R.id.contentReview_textView)
+        var ratingBar: RatingBar = v.findViewById(R.id.userRating_ratingBar)
+        var writeTime: TextView = v.findViewById(R.id.writeTime_textView)
+        var userName: TextView = v.findViewById(R.id.userName_textView)
+        var recommand: TextView = v.findViewById(R.id.recommandCount_textView)
 
     }
 
@@ -37,19 +38,21 @@ class ReviewAdapter(private var items: MutableList<ReviewItem>) :
     }
 
     // Replace the contents of a view (invoked by the layout manager)
-    // 뷰 홀더에 만든 아이템 뷰와 데이터를 바인딩 하는 부분
+    // * 뷰 홀더에 만든 아이템 뷰와 데이터를 바인딩 하는 부분
+    // * 각 아이템에 대한 클릭 리스너도 여기에 처리를 해준다.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        var item: ReviewItem = items.get(position)
+        var item: MovieReviewDTO = items[position]
 
-        holder.userReview.setText(item.content)
-        holder.ratingBar.setRating(item.rating)
-
-        // 각각의 아이템에 대한 클릭리스너는 여기로 해준다.
-        holder.userReview.setOnClickListener {
-            Toast.makeText(it.context, holder.adapterPosition.toString(), Toast.LENGTH_LONG).show()
+        holder.apply {
+            contents.text = item.contents
+            ratingBar.rating = item.rating
+            writeTime.text = item.time
+            userName.text = item.writer
+            recommand.text = "추천 ${item.recommend}"
         }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)

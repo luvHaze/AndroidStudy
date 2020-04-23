@@ -1,4 +1,4 @@
-package luv.zoey.edwith_pr.Review
+package luv.zoey.edwith_pr.MovieDetail
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

@@ -1,4 +1,4 @@
-package luv.zoey.edwith_pr.Review.Data
+package luv.zoey.edwith_pr.MovieDetail.Data
 
 data class MovieDetailDTO(
     var title: String,                  // 제목
