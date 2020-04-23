@@ -14,6 +14,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.action_bar.*
 import kotlinx.android.synthetic.main.activity_menu.*
+import luv.zoey.edwith_pr.AppHelper
 import luv.zoey.edwith_pr.MainMenu.Data.Movie
 import luv.zoey.edwith_pr.MainMenu.Data.MovieList
 import luv.zoey.edwith_pr.R

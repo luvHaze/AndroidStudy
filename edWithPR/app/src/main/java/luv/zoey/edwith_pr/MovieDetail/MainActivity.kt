@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import luv.zoey.edwith_pr.*
-import luv.zoey.edwith_pr.MainMenu.AppHelper
+import luv.zoey.edwith_pr.AppHelper
 import luv.zoey.edwith_pr.MovieDetail.Data.MovieDetailDTO
 import luv.zoey.edwith_pr.MovieDetail.Data.ResponseDTO
 import luv.zoey.edwith_pr.MovieDetail.ReviewData.MovieReviewDTO
@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // RecyclerView 사용법 4. 리싸이클러 뷰 방향설정
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         readMovieReview_recyclerView.layoutManager = layoutManager
-
         Log.d("movieReviewList", movieReviewList.toString())
 
     }
@@ -149,10 +148,39 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                 WRITE_CONTENT -> {
 
-                    var reviewDTO: MovieReviewDTO
-                    reviewDTO = data?.extras?.get("objReview") as MovieReviewDTO
+                    val reviewDTO = data?.extras?.get("objReview") as MovieReviewDTO
                     movieReviewList.add(reviewDTO)
+
+                    //TODO -> API URL으로 내가 쓴 리뷰를 보내줘야 한다.
                     Log.d("checkOBJ", reviewDTO.toString())
+
+                    val storeReviewURL = "http://boostcourse-appapi.connect.or.kr:10000/movie/createComment"
+
+                    val storeReviewRequest = object : StringRequest(
+                        Request.Method.POST,
+                        storeReviewURL,
+                        Response.Listener {
+                            Log.d("Post Success", it)
+                        },
+                        Response.ErrorListener {
+                            Log.d("Post Error", it.toString())
+                        }
+                    ) {
+                        override fun getParams(): MutableMap<String, String> {
+                            val params = HashMap<String, String>()
+
+                            params["id"] = reviewDTO.id.toString()
+                            params["writer"] = reviewDTO.writer
+                            params["time"] = reviewDTO.time
+                            params["rating"] = reviewDTO.rating.toString()
+                            params["contents"] = reviewDTO.contents
+
+                            return params
+                        }
+                    }
+                    storeReviewRequest.setShouldCache(false)
+                    AppHelper.requestQueue.add(storeReviewRequest)
+
                 }
 
             }
@@ -168,15 +196,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             // 작성하기 버튼 눌렀을 시
             R.id.writeMovieReview_button -> {
-                val writeReview_Intent = Intent(this, ReviewWriteActivity::class.java)
-                writeReview_Intent.putExtra("movieName", movieName_textview.text.toString())
+                val writeReview_Intent = Intent(this, ReviewWriteActivity::class.java).apply {
+                    putExtra("movieName", movieName_textview.text.toString())
+                    putExtra("movieID", movieID)
+                }
                 startActivityForResult(writeReview_Intent, WRITE_CONTENT)
             }
 
             // 모두보기 버튼 눌렀을 시
             R.id.readAllMovieReview_button -> {
                 val readAllReview_Intent = Intent(this, ReviewReadActivity::class.java)
-                readAllReview_Intent.putExtra("MovieID",movieReviewList)
+                readAllReview_Intent.putExtra("MovieID", movieReviewList)
                 startActivity(readAllReview_Intent)
             }
 
@@ -200,7 +230,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     movieGood_Button.setColorFilter(Color.rgb(155, 155, 0))
                 }
 
-                movieGoodCount_textView.setText(goodCountTemp.toString())
+                movieGoodCount_textView.text = goodCountTemp.toString()
 
                 if (isGoodButtonClicked) {
                     movieGood_Button.setColorFilter(Color.rgb(255, 165, 2))

@@ -17,12 +17,13 @@ class ReviewWriteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_review_write)
 
         val movieName = intent.extras?.get("movieName").toString()
+        val movieID = intent.extras?.getInt("movieID")
         movieName_textView_RWA.text = movieName
 
         writeMovieReview_button_RWA.setOnClickListener {
             var reviewDTO = MovieReviewDTO(
-                R.string.USER_ID.toString(),                // ID
-                R.string.USER_NAME.toString(),              // NAME
+                movieID!!,                               // ID
+                "KIM",                                // NAME
                 movieName,                                  // MOVIE NAME
                 null,                            // IMAGE URL
                 System.currentTimeMillis().toString(),      // TIME

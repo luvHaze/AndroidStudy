@@ -8,8 +8,6 @@
     tools:context=".MovieDetail.MainActivity">
 
 
-
-
     <ScrollView
         android:id="@+id/MasterView_ScrollView"
         android:layout_width="match_parent"
@@ -38,7 +36,6 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/kingdom_poster"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -165,11 +162,8 @@
                         app:layout_constraintTop_toTopOf="@+id/movieBad_Button">
 
                     </TextView>
-
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/section_Second"
@@ -241,10 +235,10 @@
                         android:id="@+id/movieScore_TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6sp"
                         android:text="0.0"
                         android:textColor="#2F3542"
                         android:textSize="14sp"
-                        android:layout_marginTop="6sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -305,6 +299,7 @@
                     android:id="@+id/movieStory_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:lineSpacingExtra="4sp"
                     android:paddingLeft="16dp"
                     android:paddingRight="20dp"
                     android:paddingBottom="16dp"
