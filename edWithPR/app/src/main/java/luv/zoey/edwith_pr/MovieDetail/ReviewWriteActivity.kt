@@ -23,7 +23,7 @@ class ReviewWriteActivity : AppCompatActivity() {
         writeMovieReview_button_RWA.setOnClickListener {
             var reviewDTO = MovieReviewDTO(
                 movieID!!,                               // ID
-                "KIM",                                // NAME
+                getString(R.string.userNickName),                                // NAME
                 movieName,                                  // MOVIE NAME
                 null,                            // IMAGE URL
                 System.currentTimeMillis().toString(),      // TIME

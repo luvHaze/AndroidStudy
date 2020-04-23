@@ -1,5 +1,6 @@
 package luv.zoey.edwith_pr.MovieDetail
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,11 @@ import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
 import com.bumptech.glide.Glide
+import luv.zoey.edwith_pr.AppHelper
 import luv.zoey.edwith_pr.MovieDetail.ReviewData.MovieReviewDTO
 import luv.zoey.edwith_pr.R
 
@@ -53,11 +58,40 @@ class ReviewAdapter(private var items: ArrayList<MovieReviewDTO>) :
             recommand.text = "추천 ${item.recommend}"
         }
 
+        holder.recommand.setOnClickListener {
+
+            val recommandRequestURL = "http://boostcourse-appapi.connect.or.kr:10000/movie/increaseRecommend"
+
+            var recommandRequest = object : StringRequest(
+                Request.Method.POST,
+                recommandRequestURL,
+                Response.Listener{
+                    Log.d("Recommend Success", it)
+                },
+                Response.ErrorListener {
+                    Log.d("Recommend Error", it.toString())
+                }
+            ){
+                override fun getParams(): MutableMap<String, String> {
+                    val params = HashMap<String,String>()
+
+                    params["review_id"]=item.id.toString()
+                    params["writer"]=item.writer
+
+                    return params
+                }
+            }
+
+            recommandRequest.setShouldCache(false)
+            AppHelper.requestQueue.add(recommandRequest)
+        }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = items.size
 
+    // 모든 리뷰들을 평균내주는 메소드
     fun reutrnRating(): Float {
 
         var sumRating: Float = 0F

@@ -47,12 +47,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    private fun sendRequest(movieId: Int) {
+    private fun sendRequest(movieID: Int) {
 
         var movieInfoURL =
-            "http://boostcourse-appapi.connect.or.kr:10000/movie/readMovie?id=$movieId"
+            "http://boostcourse-appapi.connect.or.kr:10000/movie/readMovie?id=$movieID"
         var movieReviewURL =
-            "http://boostcourse-appapi.connect.or.kr:10000/movie/readCommentList?id=$movieId"
+            "http://boostcourse-appapi.connect.or.kr:10000/movie/readCommentList?id=$movieID"
 
         Log.d("url", movieInfoURL)
         try {
@@ -149,18 +149,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 WRITE_CONTENT -> {
 
                     val reviewDTO = data?.extras?.get("objReview") as MovieReviewDTO
-                    movieReviewList.add(reviewDTO)
 
                     //TODO -> API URL으로 내가 쓴 리뷰를 보내줘야 한다.
                     Log.d("checkOBJ", reviewDTO.toString())
 
-                    val storeReviewURL = "http://boostcourse-appapi.connect.or.kr:10000/movie/createComment"
+                    val storeReviewURL =
+                        "http://boostcourse-appapi.connect.or.kr:10000/movie/createComment"
 
                     val storeReviewRequest = object : StringRequest(
                         Request.Method.POST,
                         storeReviewURL,
                         Response.Listener {
                             Log.d("Post Success", it)
+                            movieReviewList.add(reviewDTO)
                         },
                         Response.ErrorListener {
                             Log.d("Post Error", it.toString())
