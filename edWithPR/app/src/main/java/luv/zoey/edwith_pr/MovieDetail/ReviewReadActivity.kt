@@ -19,7 +19,7 @@ class ReviewReadActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.reviewReadAll_ActionBar))
 
         // Main에서 받은 인텐트에서 데이터를 추출해 내고
-        dataList= intent.extras?.get("MovieID") as ArrayList<MovieReviewDTO>
+        dataList= intent.extras?.get("MovieList") as ArrayList<MovieReviewDTO>
 
         //어뎁터 설정을 한 뒤 내보내 준다.
         val layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)

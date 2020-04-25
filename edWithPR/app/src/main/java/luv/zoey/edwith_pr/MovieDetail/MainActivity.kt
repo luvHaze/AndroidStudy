@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             // 모두보기 버튼 눌렀을 시
             R.id.readAllMovieReview_button -> {
                 val readAllReview_Intent = Intent(this, ReviewReadActivity::class.java)
-                readAllReview_Intent.putExtra("MovieID", movieReviewList)
+                readAllReview_Intent.putExtra("MovieList", movieReviewList)
                 startActivity(readAllReview_Intent)
             }
 
@@ -233,6 +233,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 badCountTemp = movieBadCount_textView.text.toString().toInt()
 
                 when {
+                    // 좋아요버튼이 눌려있는 상태에서 또 눌렀을 때 (중복)
                     isGoodButtonClicked -> {
                         goodCountTemp -= 1
                         isGoodButtonClicked = false
@@ -240,6 +241,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         movieBad_Button.setColorFilter(Color.rgb(47, 53, 66))
                         likeyn = "N"
                     }
+                    // 싫어요버튼이 눌려있는 상태에서 좋아요버튼 누를 때
                     isBadButtonClicked -> {
                         badCountTemp -= 1
                         goodCountTemp += 1
@@ -251,6 +253,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         likeyn = "Y"
                     }
                     else -> {
+                        // 어떠한 버튼이 눌려있지 않은 상태에서 좋아요버튼 누를 때
                         goodCountTemp += 1
                         isGoodButtonClicked = true
                         movieGood_Button.setColorFilter(Color.rgb(255, 165, 2))
@@ -258,6 +261,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
 
+                // API 서버에 보낼 goodButtonRequest 작성
                 var goodButtonRequest = object : StringRequest(
                     Request.Method.POST,
                     url,
@@ -269,6 +273,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         Log.d("like Result", it.toString())
                     }
                 ) {
+                    //request에 들어갈 인수들 설정
                     override fun getParams(): MutableMap<String, String> {
                         var params = HashMap<String, String>()
 
