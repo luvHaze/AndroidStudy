@@ -28,9 +28,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val WRITE_CONTENT: Int = 2020
     private var isGoodButtonClicked = false
     private var isBadButtonClicked = false
+    private var goodCountTemp: Int = 0
+    private var badCountTemp: Int = 0
     private lateinit var reviewAdapter: ReviewAdapter
     private lateinit var movieInfo: MovieDetailDTO
     private var movieReviewList: ArrayList<MovieReviewDTO> = arrayListOf()
+
+    val BASE_URL = "http://boostcourse-appapi.connect.or.kr:10000"
+    val READ_MOVIE_LIST = "/movie/readMovieList"
+    val READ_MOVIE = "/movie/readMovie"
+    val READ_REVIEW_LIST = "/movie/readCommentList"
+    val CREATE_REVIEW = "/movie/createComment"
+    val APPLY_RECOMMEND = "/movie/increaseRecommend"
+    val APPLY_LIKE_DISLIKE = "/movie/increaseLikeDisLike"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +57,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    // 1. 액티비티가 만들어지고 영화ID를 이용해 API 로 부터 데이터를 가져오는 메소드 (MovieData, MovieReview) 가져옴
     private fun sendRequest(movieID: Int) {
 
         var movieInfoURL =
@@ -93,6 +104,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    // 2.1 MovieData의 요청을 API로부터 응답을 받았을 때 Gson으로 json 처리를 해준다
     private fun movieDataResponse(response: String?) {
         val gson = Gson()
         val processData = gson.fromJson(response, ResponseDTO::class.java)
@@ -101,6 +113,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         movieDataResponsePageSetting()
     }
 
+    // json화된 영화정보 데이타를 각 뷰에 설정해 준다.
     private fun movieDataResponsePageSetting() {
 
         Glide.with(this).load(movieInfo.image).into(moviePicture_imgview)
@@ -125,6 +138,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    // 2.2  MovieReview의 요청을 API로부터 응답을 받았을 때 Gson으로 json 처리를 해준다
     private fun movieReviewResponse(response: String?) {
         val gson = Gson()
         var processData = gson.fromJson(response, ResponseReviewDTO::class.java)
@@ -213,62 +227,121 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             //좋아요 버튼 눌렀을 시
             R.id.movieGood_Button -> {
-                var goodCountTemp = movieGoodCount_textView.text.toString().toInt()
-                var badCountTemp = movieBadCount_textView.text.toString().toInt()
+                var url = "${BASE_URL}${APPLY_LIKE_DISLIKE}"
+                var likeyn: String
+                goodCountTemp = movieGoodCount_textView.text.toString().toInt()
+                badCountTemp = movieBadCount_textView.text.toString().toInt()
 
-                if (isGoodButtonClicked) {
-                    goodCountTemp -= 1
-                    isGoodButtonClicked = false
-                } else if (isBadButtonClicked) {
-                    badCountTemp -= 1
-                    goodCountTemp += 1
-                    movieBadCount_textView.text = badCountTemp.toString()
-                    isGoodButtonClicked = true
-                    isBadButtonClicked = false
-                } else {
-                    goodCountTemp += 1
-                    isGoodButtonClicked = true
-                    movieGood_Button.setColorFilter(Color.rgb(155, 155, 0))
+                when {
+                    isGoodButtonClicked -> {
+                        goodCountTemp -= 1
+                        isGoodButtonClicked = false
+                        movieGood_Button.setColorFilter(Color.rgb(47, 53, 66))
+                        movieBad_Button.setColorFilter(Color.rgb(47, 53, 66))
+                        likeyn = "N"
+                    }
+                    isBadButtonClicked -> {
+                        badCountTemp -= 1
+                        goodCountTemp += 1
+                        movieBadCount_textView.text = badCountTemp.toString()
+                        isGoodButtonClicked = true
+                        isBadButtonClicked = false
+                        movieGood_Button.setColorFilter(Color.rgb(255, 165, 2))
+                        movieBad_Button.setColorFilter(Color.rgb(47, 53, 66))
+                        likeyn = "Y"
+                    }
+                    else -> {
+                        goodCountTemp += 1
+                        isGoodButtonClicked = true
+                        movieGood_Button.setColorFilter(Color.rgb(255, 165, 2))
+                        likeyn = "Y"
+                    }
                 }
 
-                movieGoodCount_textView.text = goodCountTemp.toString()
+                var goodButtonRequest = object : StringRequest(
+                    Request.Method.POST,
+                    url,
+                    Response.Listener {
+                        Log.d("like Result", it.toString())
+                        movieGoodCount_textView.text = goodCountTemp.toString()
+                    },
+                    Response.ErrorListener {
+                        Log.d("like Result", it.toString())
+                    }
+                ) {
+                    override fun getParams(): MutableMap<String, String> {
+                        var params = HashMap<String, String>()
 
-                if (isGoodButtonClicked) {
-                    movieGood_Button.setColorFilter(Color.rgb(255, 165, 2))
-                    movieBad_Button.setColorFilter(Color.rgb(47, 53, 66))
-                } else {
-                    movieGood_Button.setColorFilter(Color.rgb(47, 53, 66))
+                        params["id"] = movieID.toString()
+                        params["likeyn"] = likeyn
+
+                        return params
+                    }
                 }
+
+                goodButtonRequest.setShouldCache(false)
+                AppHelper.requestQueue.add(goodButtonRequest)
+
             }
 
             //싫어요 버튼 눌렀을 시
             R.id.movieBad_Button -> {
-                var goodCountTemp = movieGoodCount_textView.text.toString().toInt()
-                var badCountTemp = movieBadCount_textView.text.toString().toInt()
+                var url = "${BASE_URL}${APPLY_LIKE_DISLIKE}"
+                var disLikeYN: String
+                goodCountTemp = movieGoodCount_textView.text.toString().toInt()
+                badCountTemp = movieBadCount_textView.text.toString().toInt()
 
-                if (isGoodButtonClicked) {
-                    goodCountTemp -= 1
-                    badCountTemp += 1
-                    isGoodButtonClicked = false
-                    isBadButtonClicked = true
-                    movieGoodCount_textView.text = goodCountTemp.toString()
-                } else if (isBadButtonClicked) {
-                    badCountTemp -= 1
-                    isBadButtonClicked = false
-                } else {
-                    badCountTemp += 1
-                    isBadButtonClicked = true
+                when {
+                    isGoodButtonClicked -> {
+                        goodCountTemp -= 1
+                        badCountTemp += 1
+                        isGoodButtonClicked = false
+                        isBadButtonClicked = true
+                        movieGoodCount_textView.text = goodCountTemp.toString()
+                        movieGood_Button.setColorFilter(Color.rgb(47, 53, 66))
+                        movieBad_Button.setColorFilter(Color.rgb(255, 165, 2))
+                        disLikeYN = "Y"
+                    }
+                    isBadButtonClicked -> {
+                        badCountTemp -= 1
+                        isBadButtonClicked = false
+                        movieBad_Button.setColorFilter(Color.rgb(47, 53, 66))
+                        disLikeYN = "N"
+                    }
+                    else -> {
+                        badCountTemp += 1
+                        isBadButtonClicked = true
+                        movieBad_Button.setColorFilter(Color.rgb(255, 165, 2))
+                        disLikeYN = "Y"
+                    }
                 }
 
-                movieBadCount_textView.setText(badCountTemp.toString())
+                var badButtonRequest = object : StringRequest(
+                    Request.Method.POST,
+                    url,
+                    Response.Listener {
+                        Log.d("dislike Result", it.toString())
+                        movieBadCount_textView.text = badCountTemp.toString()
+                    },
+                    Response.ErrorListener {
+                        Log.d("dislike Result", it.toString())
+                    }
+                ) {
+                    override fun getParams(): MutableMap<String, String> {
+                        var params = HashMap<String, String>()
 
-                if (isBadButtonClicked) {
-                    movieBad_Button.setColorFilter(Color.rgb(255, 165, 2))
-                    movieGood_Button.setColorFilter(Color.rgb(47, 53, 66))
-                } else {
-                    movieBad_Button.setColorFilter(Color.rgb(47, 53, 66))
+                        params["id"] = movieID.toString()
+                        params["dislikeyn"] = disLikeYN
+
+                        return params
+                    }
                 }
+
+                badButtonRequest.setShouldCache(false)
+                AppHelper.requestQueue.add(badButtonRequest)
+
             }
+
         }
 
     }
