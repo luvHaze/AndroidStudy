@@ -1,7 +1,12 @@
 package luv.zoey.edwith_pr.MainMenu.Data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Movie (
-    var id: Int,                        // ID
+
+    @PrimaryKey var id: Int,                        // ID
     var title: String,                  // 제목
     var title_eng: String,
     var date: String,                  // 날짜
