@@ -13,7 +13,7 @@ interface MovieDao {
     @Insert
     fun insert(movie: Movie)
 
-    @Query ("SELECT * FROM Movie")
+    @Query("SELECT * FROM Movie")
     fun getAll(): ArrayList<Movie>
 
 }

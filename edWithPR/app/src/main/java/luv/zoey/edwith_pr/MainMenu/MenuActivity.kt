@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.room.Room
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -15,6 +17,8 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.action_bar.*
 import kotlinx.android.synthetic.main.activity_menu.*
 import luv.zoey.edwith_pr.AppHelper
+import luv.zoey.edwith_pr.MainMenu.Data.AppDatabase
+import luv.zoey.edwith_pr.MainMenu.Data.MainViewModel
 import luv.zoey.edwith_pr.MainMenu.Data.Movie
 import luv.zoey.edwith_pr.MainMenu.Data.MovieList
 import luv.zoey.edwith_pr.R
@@ -23,6 +27,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     // API 로 부터 받아온 MovieList들을 담기 위한 배열
     private var movieList: ArrayList<Movie> = arrayListOf()
+    private val viewModel: MainViewModel by viewModels()
 
     //뷰페이저 어뎁터 객체를 만들고 addItem으로 프래그먼트를 추가해준다
     private val viewPagerAdapter = MenuViewPagerAdapter(supportFragmentManager)
@@ -63,9 +68,13 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             url,
             Response.Listener {
                 // it -> respose 응답받은 DATA 를 뜻함
-
-                processResponse(it)  // 응답받은 데이터를 Gson으로 가공
+                processResponse(it) // 응답받은 데이터를 Gson으로 가공
                 Log.d("success", it)
+
+                movieList.forEach { movie ->
+                    viewModel.insert(movie)
+                }
+
 //
             },
             Response.ErrorListener {
@@ -93,6 +102,8 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             movieList.add(movie)
             Log.d("data", movie.toString())
 
+            // viewModel.insert(movie)
+            //  Log.d("DB ADD ",viewModel.getAll().toString())
             // 어뎁터에 하나씩 등록을 해준다.
             viewPagerAdapter.addItem(MovieFragment(movie))
         }
