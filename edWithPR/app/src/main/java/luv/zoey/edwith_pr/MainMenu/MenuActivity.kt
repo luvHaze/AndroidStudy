@@ -71,10 +71,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 processResponse(it) // 응답받은 데이터를 Gson으로 가공
                 Log.d("success", it)
 
-                movieList.forEach { movie ->
-                    viewModel.insert(movie)
-                }
-
 //
             },
             Response.ErrorListener {
@@ -102,8 +98,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             movieList.add(movie)
             Log.d("data", movie.toString())
 
-            // viewModel.insert(movie)
-            //  Log.d("DB ADD ",viewModel.getAll().toString())
             // 어뎁터에 하나씩 등록을 해준다.
             viewPagerAdapter.addItem(MovieFragment(movie))
         }
