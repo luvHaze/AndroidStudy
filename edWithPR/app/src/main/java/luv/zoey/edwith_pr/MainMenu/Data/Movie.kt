@@ -1,21 +1,20 @@
 package luv.zoey.edwith_pr.MainMenu.Data
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 
-@Entity
-data class Movie (
 
-    @PrimaryKey var id: Int,                        // ID
-    var title: String,                  // 제목
-    var title_eng: String,
-    var date: String,                  // 날짜
-    var user_rating: Float,            // 유저 평점
-    var audience_rating: Float,
-    var reviewer_rating: Float,
-    var reservation_rate: Float,
-    var reservation_grade: Int,
-    var grade: Int,
-    var thumb: String,
-    var image: String
-)
+open class Movie (
+    var id: Int? = null,                        // ID
+    var title: String?= null,                  // 제목
+    var title_eng: String?= null,
+    var date: String?= null,                  // 날짜
+    var user_rating: Float?= null,            // 유저 평점
+    var audience_rating: Float?= null,
+    var reviewer_rating: Float?= null,
+    var reservation_rate: Float?= null,
+    var reservation_grade: Int?= null,
+    var grade: Int?= null,
+    var thumb: String?= null,
+    var image: String?= null
+): RealmObject()

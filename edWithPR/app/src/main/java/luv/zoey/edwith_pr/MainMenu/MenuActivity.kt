@@ -1,5 +1,6 @@
 package luv.zoey.edwith_pr.MainMenu
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,18 +8,18 @@ import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.room.Room
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
+import io.realm.Realm
+import io.realm.kotlin.createObject
+import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.action_bar.*
 import kotlinx.android.synthetic.main.activity_menu.*
 import luv.zoey.edwith_pr.AppHelper
-import luv.zoey.edwith_pr.MainMenu.Data.AppDatabase
-import luv.zoey.edwith_pr.MainMenu.Data.MainViewModel
 import luv.zoey.edwith_pr.MainMenu.Data.Movie
 import luv.zoey.edwith_pr.MainMenu.Data.MovieList
 import luv.zoey.edwith_pr.R
@@ -27,7 +28,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     // API 로 부터 받아온 MovieList들을 담기 위한 배열
     private var movieList: ArrayList<Movie> = arrayListOf()
-    private val viewModel: MainViewModel by viewModels()
+    private lateinit var realm: Realm
 
     //뷰페이저 어뎁터 객체를 만들고 addItem으로 프래그먼트를 추가해준다
     private val viewPagerAdapter = MenuViewPagerAdapter(supportFragmentManager)
@@ -37,9 +38,28 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_menu)
         setSupportActionBar(findViewById(R.id.menu_toolbar)) // 액션바 등록
 
+        realm = Realm.getDefaultInstance()
         // volley 0. request들을 보관해둘 RequestQueue 객체를 먼저 등록해준다.
         AppHelper.requestQueue = Volley.newRequestQueue(applicationContext)
-        requestData()
+
+
+
+        if(realm.isEmpty){
+            requestData()
+        }else{
+
+            realm.where(Movie::class.java).findAll().forEach {
+                viewPagerAdapter.addItem(MovieFragment(it))
+                Log.d("DATABASE LOAD SUCCESS: ", it.toString() )
+
+            }
+            mainmenu_ViewPager.adapter = viewPagerAdapter
+            Log.d("COUNT DATA : " ,realm.where(Movie::class.java).count().toString())
+        }
+
+
+
+        Log.d("Call RequestData", "requestData() Called")
 
 /*      activity_menu 레이아웃은 드로어 레이아웃이 메인레이아웃이며
         child 로는 툴바가 들어갈 LinearLayout과
@@ -71,7 +91,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 processResponse(it) // 응답받은 데이터를 Gson으로 가공
                 Log.d("success", it)
 
-//
             },
             Response.ErrorListener {
                 Log.d("Error_RequestMainMenu", it.toString())
@@ -98,8 +117,13 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             movieList.add(movie)
             Log.d("data", movie.toString())
 
-            // 어뎁터에 하나씩 등록을 해준다.
+            realm.executeTransaction {
+                it.insert(movie)
+                Log.d("REALM STATUS : ", it.where(Movie::class.java).findAll().toString())
+            }
+
             viewPagerAdapter.addItem(MovieFragment(movie))
+
         }
 
         //만든 어뎁터를 위젯에 등록해주면 어뎁터에 넣어주었던 프레그먼트들이 나오기 시작한다.
@@ -130,4 +154,9 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return false
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
 }
