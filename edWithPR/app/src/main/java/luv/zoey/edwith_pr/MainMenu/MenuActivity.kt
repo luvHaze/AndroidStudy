@@ -1,13 +1,11 @@
 package luv.zoey.edwith_pr.MainMenu
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.viewModels
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -15,13 +13,12 @@ import com.android.volley.toolbox.Volley
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import io.realm.Realm
-import io.realm.kotlin.createObject
-import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.action_bar.*
 import kotlinx.android.synthetic.main.activity_menu.*
 import luv.zoey.edwith_pr.AppHelper
 import luv.zoey.edwith_pr.MainMenu.Data.Movie
 import luv.zoey.edwith_pr.MainMenu.Data.MovieList
+import luv.zoey.edwith_pr.NetworkStatus
 import luv.zoey.edwith_pr.R
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -42,24 +39,30 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // volley 0. request들을 보관해둘 RequestQueue 객체를 먼저 등록해준다.
         AppHelper.requestQueue = Volley.newRequestQueue(applicationContext)
 
+        //네트워크 연결상태 확인
+        val isNetworkWorking = NetworkStatus.getNetworkStatus(applicationContext)
 
-
-        if(realm.isEmpty){
-            requestData()
-        }else{
-
+        // 네트워크가 비활성화 상태일경우
+        if (!isNetworkWorking) {
+            Toast.makeText(this, "네트워크가 연결되어있지 않아 DB를 로드합니다.", Toast.LENGTH_LONG).show()
             realm.where(Movie::class.java).findAll().forEach {
                 viewPagerAdapter.addItem(MovieFragment(it))
-                Log.d("DATABASE LOAD SUCCESS: ", it.toString() )
+                Log.d("DATABASE LOAD SUCCESS: ", it.toString())
 
             }
             mainmenu_ViewPager.adapter = viewPagerAdapter
-            Log.d("COUNT DATA : " ,realm.where(Movie::class.java).count().toString())
+            Log.d("COUNT DATA : ", realm.where(Movie::class.java).count().toString())
+
+        } // 네트워크가 활성 상태인 경우
+        else {
+
+            // 데이터 베이스 비었으면 API 로부터 데이터 요청
+            if (realm.isEmpty) {
+                requestData()
+                Log.d("Call RequestData", "requestData() Called")
+            }
+
         }
-
-
-
-        Log.d("Call RequestData", "requestData() Called")
 
 /*      activity_menu 레이아웃은 드로어 레이아웃이 메인레이아웃이며
         child 로는 툴바가 들어갈 LinearLayout과

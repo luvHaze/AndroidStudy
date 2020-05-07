@@ -2,6 +2,7 @@ package luv.zoey.edwith_pr.MainMenu
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -18,7 +19,7 @@ class ImageLoadTask(var urlStr: String, var imgView: ImageView)
 
     // 스레드가 시작하기 전에 수행할 작업(메인 스레드)
     override fun onPreExecute() {
-
+        ConnectivityManager.TYPE_MOBILE
         super.onPreExecute()
     }
 

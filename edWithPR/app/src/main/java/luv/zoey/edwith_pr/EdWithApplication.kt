@@ -2,6 +2,7 @@ package luv.zoey.edwith_pr
 
 import android.app.Application
 import io.realm.Realm
+import io.realm.RealmConfiguration
 
 class EdWithApplication : Application() {
 
@@ -9,6 +10,7 @@ class EdWithApplication : Application() {
         super.onCreate()
 
         Realm.init(applicationContext)
-    }
 
+
+    }
 }

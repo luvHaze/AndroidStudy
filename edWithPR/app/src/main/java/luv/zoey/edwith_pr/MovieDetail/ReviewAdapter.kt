@@ -52,7 +52,7 @@ class ReviewAdapter(private var items: ArrayList<MovieReviewDTO>) :
 
         holder.apply {
             contents.text = item.contents
-            ratingBar.rating = item.rating
+            ratingBar.rating = item.rating!!
             writeTime.text = item.time
             userName.text = item.writer
             recommand.text = "추천 ${item.recommend}"
@@ -72,8 +72,8 @@ class ReviewAdapter(private var items: ArrayList<MovieReviewDTO>) :
                     Log.d("Recommend Error", it.toString())
                 }
             ){
-                override fun getParams(): MutableMap<String, String> {
-                    val params = HashMap<String,String>()
+                override fun getParams(): HashMap<String, String?> {
+                    val params = HashMap<String,String?>()
 
                     params["review_id"]=item.id.toString()
                     params["writer"]=item.writer
@@ -97,7 +97,7 @@ class ReviewAdapter(private var items: ArrayList<MovieReviewDTO>) :
         var sumRating: Float = 0F
 
         items.forEach { position ->
-            sumRating += position.rating
+            sumRating += position.rating!!
         }
 
         return sumRating / items.size

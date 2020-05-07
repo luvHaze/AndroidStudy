@@ -13,6 +13,9 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import io.realm.Realm
+import io.realm.RealmConfiguration
+import io.realm.kotlin.delete
 import kotlinx.android.synthetic.main.activity_main.*
 import luv.zoey.edwith_pr.*
 import luv.zoey.edwith_pr.AppHelper
@@ -31,8 +34,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var goodCountTemp: Int = 0
     private var badCountTemp: Int = 0
     private lateinit var reviewAdapter: ReviewAdapter
-    private lateinit var movieInfo: MovieDetailDTO
+    private lateinit var realm: Realm
     private var movieReviewList: ArrayList<MovieReviewDTO> = arrayListOf()
+   // private val realm: Realm = Realm.getDefaultInstance()
 
     val BASE_URL = "http://boostcourse-appapi.connect.or.kr:10000"
     val READ_MOVIE_LIST = "/movie/readMovieList"
@@ -46,6 +50,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        realm = Realm.getDefaultInstance()
         // 메인메뉴 인텐트에서 ID부터 받아온다.
         movieID = intent.extras!!.getInt("movieID")
         sendRequest(movieID)
@@ -109,12 +114,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val gson = Gson()
         val processData = gson.fromJson(response, ResponseDTO::class.java)
 
-        movieInfo = processData.result[0]
-        movieDataResponsePageSetting()
+        var movieInfo = processData.result[0]
+        movieDataResponsePageSetting(movieInfo)
+
+        //TODO DATABASE
+
+        realm.executeTransaction {
+
+            //it.insert(movieInfo)
+            Log.d("DATA INSERT ", it.where(MovieDetailDTO::class.java).findAll().toString())
+        }
+
     }
 
     // json화된 영화정보 데이타를 각 뷰에 설정해 준다.
-    private fun movieDataResponsePageSetting() {
+    private fun movieDataResponsePageSetting(movieInfo: MovieDetailDTO) {
 
         Glide.with(this).load(movieInfo.image).into(moviePicture_imgview)
         movieName_textview.text = movieInfo.title
@@ -129,7 +143,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         movieGoodCount_textView.text = movieInfo.like.toString()
         movieBadCount_textView.text = movieInfo.dislike.toString()
         movieRating_textView.text = movieInfo.reservation_grade.toString() + "위"
-        movieScore_RatinBar.rating = movieInfo.user_rating
+        movieScore_RatinBar.rating = movieInfo.user_rating!!
         movieScore_TextView.text = movieInfo.user_rating.toString()
         movieCountPeople_textView.text = movieInfo.audience.toString() + "명"
         movieStory_textview.text = movieInfo.synopsis
@@ -181,8 +195,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             Log.d("Post Error", it.toString())
                         }
                     ) {
-                        override fun getParams(): MutableMap<String, String> {
-                            val params = HashMap<String, String>()
+                        override fun getParams(): HashMap<String, String?> {
+                            val params = HashMap<String, String?>()
 
                             params["id"] = reviewDTO.id.toString()
                             params["writer"] = reviewDTO.writer
