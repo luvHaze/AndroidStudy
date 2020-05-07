@@ -42,8 +42,15 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //네트워크 연결상태 확인
         val isNetworkWorking = NetworkStatus.getNetworkStatus(applicationContext)
 
+        realm.executeTransaction {
+            it.deleteAll()
+        }
+
+        //TODO
+
+        // # [데이터 파트]
         // 네트워크가 비활성화 상태일경우
-        if (!isNetworkWorking) {
+       /* if (!isNetworkWorking) {
             Toast.makeText(this, "네트워크가 연결되어있지 않아 DB를 로드합니다.", Toast.LENGTH_LONG).show()
             realm.where(Movie::class.java).findAll().forEach {
                 viewPagerAdapter.addItem(MovieFragment(it))
@@ -55,14 +62,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         } // 네트워크가 활성 상태인 경우
         else {
-
             // 데이터 베이스 비었으면 API 로부터 데이터 요청
             if (realm.isEmpty) {
                 requestData()
                 Log.d("Call RequestData", "requestData() Called")
             }
-
-        }
+        }*/
 
 /*      activity_menu 레이아웃은 드로어 레이아웃이 메인레이아웃이며
         child 로는 툴바가 들어갈 LinearLayout과
@@ -120,10 +125,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             movieList.add(movie)
             Log.d("data", movie.toString())
 
-            realm.executeTransaction {
-                it.insert(movie)
+
+            // TODO realm 설정부분 다시한번 확인
+            /*realm.executeTransaction {
+                it.insertOrUpdate(movie)
                 Log.d("REALM STATUS : ", it.where(Movie::class.java).findAll().toString())
-            }
+            }*/
 
             viewPagerAdapter.addItem(MovieFragment(movie))
 

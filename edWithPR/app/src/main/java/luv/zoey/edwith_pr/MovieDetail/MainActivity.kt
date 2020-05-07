@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         realm.executeTransaction {
 
             //it.insert(movieInfo)
-            Log.d("DATA INSERT ", it.where(MovieDetailDTO::class.java).findAll().toString())
+            //Log.d("DATA INSERT ", it.where(MovieDetailDTO::class.java).findAll().toString())
         }
 
     }

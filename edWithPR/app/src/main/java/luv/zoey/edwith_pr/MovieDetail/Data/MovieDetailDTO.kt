@@ -26,4 +26,4 @@ open class MovieDetailDTO(
     var actor: String? = null,
     var like: Int? = null,
     var dislike: Int? = null
-) : RealmObject()
+)
