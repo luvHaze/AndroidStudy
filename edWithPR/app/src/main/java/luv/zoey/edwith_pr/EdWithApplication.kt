@@ -11,6 +11,7 @@ class EdWithApplication : Application() {
 
         Realm.init(applicationContext)
 
-
+        val config = RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build()
+        Realm.setDefaultConfiguration(config)
     }
 }

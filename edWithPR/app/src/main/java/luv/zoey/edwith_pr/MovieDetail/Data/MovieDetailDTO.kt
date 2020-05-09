@@ -3,6 +3,7 @@ package luv.zoey.edwith_pr.MovieDetail.Data
 import io.realm.Realm
 import io.realm.RealmObject
 
+
 open class MovieDetailDTO(
     var title: String? = null,                  // 제목
     var id: Int? = null,                        // ID
@@ -26,4 +27,4 @@ open class MovieDetailDTO(
     var actor: String? = null,
     var like: Int? = null,
     var dislike: Int? = null
-)
+):RealmObject()

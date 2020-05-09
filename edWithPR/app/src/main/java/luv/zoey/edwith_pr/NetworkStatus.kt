@@ -15,11 +15,8 @@ class NetworkStatus {
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val networkStatus =
                 connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            val isConnect:Boolean
 
-            isConnect = (networkStatus != null)
-
-            return isConnect
+            return networkStatus != null
         }
     }
 }
