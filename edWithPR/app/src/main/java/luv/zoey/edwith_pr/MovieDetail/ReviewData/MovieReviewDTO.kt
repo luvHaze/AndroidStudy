@@ -8,14 +8,14 @@ import kotlinx.android.parcel.Parcelize
 open class MovieReviewDTO(
     var id: Int? = null,
     var writer: String? = null,
-    var movieId: String? = null,
+    var movieId: Int? = null,
     var writer_image: String? = null,
     var time: String? = null,
     var timestamp: Int? = null,
     var rating: Float? = null,
     var contents: String? = null,
     var recommend: Int? = null
-) :Parcelable
+) :Parcelable,RealmObject()
 
 
 

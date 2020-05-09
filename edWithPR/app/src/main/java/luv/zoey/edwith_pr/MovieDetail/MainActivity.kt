@@ -15,8 +15,6 @@ import com.android.volley.toolbox.StringRequest
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import io.realm.Realm
-import io.realm.RealmConfiguration
-import io.realm.kotlin.delete
 import kotlinx.android.synthetic.main.activity_main.*
 import luv.zoey.edwith_pr.*
 import luv.zoey.edwith_pr.AppHelper
@@ -35,9 +33,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var goodCountTemp: Int = 0
     private var badCountTemp: Int = 0
     private lateinit var reviewAdapter: ReviewAdapter
-    private lateinit var realm: Realm
+    private lateinit var movieDetailRealm: Realm
+    private lateinit var movieReviewRealm: Realm
     private var movieReviewList: ArrayList<MovieReviewDTO> = arrayListOf()
-    // private val realm: Realm = Realm.getDefaultInstance()
 
     val BASE_URL = "http://boostcourse-appapi.connect.or.kr:10000"
     val READ_MOVIE_LIST = "/movie/readMovieList"
@@ -51,44 +49,48 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val networkStatus = NetworkStatus.getNetworkStatus(applicationContext)
-
-        // [DB] Realm 인스턴스 생성
-        realm =
-            Realm.getInstance(RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build())
-
-        // [Intent] 메인메뉴 인텐트에서 ID부터 받아온다.
-        movieID = intent.extras!!.getInt("movieID")
-
-        //[Network] 네트워크 연결이 되지 않은경우
-        if (!networkStatus) {
-            Toast.makeText(this, "네트워크가 연결되어있지 않아 DB를 로드합니다.", Toast.LENGTH_LONG).show()
-            val result = realm.where(MovieDetailDTO::class.java).equalTo("id", movieID).findFirst()
-            movieDataResponsePageSetting(result!!)
-            Log.d("DATA LOAD", "데이터 로드 성공")
-
-
-        } // [Network] 네트워크 연결상태인 경우
-        else {
-            // [DB] DB가 비어있다면
-            if (realm.isEmpty) {
-                // [REQUEST API] API에 데이터 요청하고 데이터 가공
-                sendRequest(movieID)
-
-            }// [DB] DB에 값이 존재한다면
-            else {
-                val result =
-                    realm.where(MovieDetailDTO::class.java).equalTo("id", movieID).findFirst()
-                movieDataResponsePageSetting(result!!)
-                Log.d("DATA LOAD", "데이터 로드 성공")
-            }
-
-        }
-
         // RecyclerView 사용법 4. 리싸이클러 뷰 방향설정
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         readMovieReview_recyclerView.layoutManager = layoutManager
         Log.d("movieReviewList", movieReviewList.toString())
+
+        // [DB] Realm 인스턴스 생성 (영화정보,리뷰)
+        movieDetailRealm = Realm.getDefaultInstance()
+        movieReviewRealm = Realm.getDefaultInstance()
+
+        // [Intent] 메인메뉴 인텐트에서 ID부터 받아온다.
+        movieID = intent.extras!!.getInt("movieID")
+
+        val networkStatus = NetworkStatus.getNetworkStatus(applicationContext)
+        //[Network] 네트워크 연결이 되지 않은경우
+        if (!networkStatus) {
+            Toast.makeText(this, "네트워크가 연결되어있지 않아 DB를 로드합니다.", Toast.LENGTH_LONG).show()
+
+
+            // [DB] 영화 데이터 가져오는 과정
+            val resultDetailData =
+                movieDetailRealm.where(MovieDetailDTO::class.java).equalTo("id", movieID)
+                    .findFirst()
+            movieDataResponsePageSetting(resultDetailData!!)
+            Log.d("DATA LOAD", "데이터 로드 성공")
+
+            // [DB] 리뷰 데이터 가져오는 과정
+            val resultReviewData =
+                movieReviewRealm.where(MovieReviewDTO::class.java).equalTo("movieId", movieID)
+                    .findAll()
+
+            resultReviewData.forEach {
+                movieReviewList.add(it)
+            }
+
+            reviewAdapter = ReviewAdapter(movieReviewList)
+            readMovieReview_recyclerView.adapter = reviewAdapter
+
+        } // [Network] 네트워크 연결상태인 경우
+        else {
+            sendRequest(movieID) // [API] DB가 비어있다면 API에 요청한다
+        }
+
 
     }
 
@@ -129,6 +131,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             //이전 결과 있더라도 새로 추가해주는 코드
             requestMovieInfo.setShouldCache(false)
             requestReview.setShouldCache(false)
+
             // 만든 리퀘스트를 리퀘스트 큐에 넣어준다.
             AppHelper.requestQueue.add(requestMovieInfo)
             AppHelper.requestQueue.add(requestReview)
@@ -148,7 +151,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         movieDataResponsePageSetting(movieInfo)
 
         //[DB 저장하는 부분]
-        realm.executeTransaction {
+        movieDetailRealm.executeTransaction {
 
             it.insertOrUpdate(movieInfo)
             Log.d("DATA INSERT ", it.where(MovieDetailDTO::class.java).findAll().toString())
@@ -187,6 +190,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         processData.result.forEach {
             movieReviewList.add(it)
+
+            movieReviewRealm.executeTransaction { realm ->
+                realm.insertOrUpdate(it)
+                Log.d(
+                    "Review Added",
+                    "${realm.where(MovieReviewDTO::class.java).findAll().toString()}"
+                )
+            }
+
+        }
+        for (review in movieReviewList) {
+
         }
 
         // 리싸이클러 뷰에 어뎁터 설정해주기

@@ -24,7 +24,7 @@ class ReviewWriteActivity : AppCompatActivity() {
             var reviewDTO = MovieReviewDTO(
                 movieID!!,                               // ID
                 getString(R.string.userNickName),                                // NAME
-                movieName,                                  // MOVIE NAME
+                movieName.toInt(),                          // MOVIE NAME
                 null,                            // IMAGE URL
                 System.currentTimeMillis().toString(),      // TIME
                 null,                              // TIME STAMP
