@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     .findFirst()
             movieDataResponsePageSetting(resultDetailData!!)
             Log.d("DATA LOAD", "데이터 로드 성공")
+            Log.d("DATA : ", resultDetailData.toString())
 
             // [DB] 리뷰 데이터 가져오는 과정
             val resultReviewData =
