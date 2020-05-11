@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
@@ -32,7 +35,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var isBadButtonClicked = false
     private var goodCountTemp: Int = 0
     private var badCountTemp: Int = 0
+    private lateinit var movieInfo: MovieDetailDTO
     private lateinit var reviewAdapter: ReviewAdapter
+    private lateinit var galleryAdapter: GalleryAdapter
     private lateinit var movieDetailRealm: Realm
     private lateinit var movieReviewRealm: Realm
     private var movieReviewList: ArrayList<MovieReviewDTO> = arrayListOf()
@@ -50,8 +55,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         // RecyclerView 사용법 4. 리싸이클러 뷰 방향설정
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        readMovieReview_recyclerView.layoutManager = layoutManager
+        val reviewRecyclerviewLM = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        readMovieReview_recyclerView.layoutManager = reviewRecyclerviewLM
+
+        val galleryRecyclerviewLM = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        gallery_recyclerView.layoutManager = galleryRecyclerviewLM
+
         Log.d("movieReviewList", movieReviewList.toString())
 
         // [DB] Realm 인스턴스 생성 (영화정보,리뷰)
@@ -66,14 +75,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (!networkStatus) {
             Toast.makeText(this, "네트워크가 연결되어있지 않아 DB를 로드합니다.", Toast.LENGTH_LONG).show()
 
-
             // [DB] 영화 데이터 가져오는 과정
-            val resultDetailData =
+            movieInfo =
                 movieDetailRealm.where(MovieDetailDTO::class.java).equalTo("id", movieID)
-                    .findFirst()
-            movieDataResponsePageSetting(resultDetailData!!)
+                    .findFirst()!!
+            movieDataResponsePageSetting()
             Log.d("DATA LOAD", "데이터 로드 성공")
-            Log.d("DATA : ", resultDetailData.toString())
+            Log.d("DATA : ", movieInfo.toString())
 
             // [DB] 리뷰 데이터 가져오는 과정
             val resultReviewData =
@@ -87,9 +95,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             reviewAdapter = ReviewAdapter(movieReviewList)
             readMovieReview_recyclerView.adapter = reviewAdapter
 
+            if(movieInfo.photos==null){
+                section_Fifth.visibility=ConstraintLayout.GONE
+            }else{
+                galleryAdapter = GalleryAdapter(movieInfo)
+                gallery_recyclerView.adapter = galleryAdapter
+            }
+
         } // [Network] 네트워크 연결상태인 경우
         else {
             sendRequest(movieID) // [API] DB가 비어있다면 API에 요청한다
+
         }
 
 
@@ -116,7 +132,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     Log.d("Error_RequestDetail", it.toString())
                 }
             )
-
             var requestReview = StringRequest(
                 Request.Method.GET,
                 movieReviewURL,
@@ -148,19 +163,29 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val gson = Gson()
         val processData = gson.fromJson(response, ResponseDTO::class.java)
 
-        var movieInfo = processData.result[0]
-        movieDataResponsePageSetting(movieInfo)
+        movieInfo = processData.result[0]
+        Log.d("photos",movieInfo.photos.toString())
+        Log.d("videos",movieInfo.videos.toString())
+        movieDataResponsePageSetting()
 
         //[DB 저장하는 부분]
         movieDetailRealm.executeTransaction {
 
             it.insertOrUpdate(movieInfo)
-            Log.d("DATA INSERT ", it.where(MovieDetailDTO::class.java).findAll().toString())
+            Log.d("DATA INSERT ", it.toString())
         }
+
+        if(movieInfo.photos==null){
+            section_Fifth.visibility=ConstraintLayout.GONE
+        }else{
+            galleryAdapter = GalleryAdapter(movieInfo)
+            gallery_recyclerView.adapter = galleryAdapter
+        }
+
     }
 
     // json화된 영화정보 데이타를 각 뷰에 설정해 준다.
-    private fun movieDataResponsePageSetting(movieInfo: MovieDetailDTO) {
+    private fun movieDataResponsePageSetting() {
 
         Glide.with(this).load(movieInfo.image).into(moviePicture_imgview)
         movieName_textview.text = movieInfo.title
@@ -201,10 +226,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         }
-        for (review in movieReviewList) {
-
-        }
-
         // 리싸이클러 뷰에 어뎁터 설정해주기
         reviewAdapter = ReviewAdapter(movieReviewList)
         readMovieReview_recyclerView.adapter = reviewAdapter

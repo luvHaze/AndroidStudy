@@ -8,16 +8,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import io.realm.RealmList
 import kotlinx.android.synthetic.main.gallery_item.view.*
 import luv.zoey.edwith_pr.MovieDetail.Data.MovieDetailDTO
 import luv.zoey.edwith_pr.R
 import java.util.zip.Inflater
 
-class GalleryAdapter(private var item: ArrayList<String>, private var item2 :ArrayList<String>) :
+class GalleryAdapter(private var item: MovieDetailDTO) :
     RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
 
+    var photoList = item.photos!!.split(',') as ArrayList<String>
+    var movieList = item.videos!!.split(',') as ArrayList<String>
 
-    lateinit var itemContext : Context
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         var thumbnail_imageView: ImageView = v.findViewById(R.id.thumbnail_imageView)
@@ -30,22 +32,17 @@ class GalleryAdapter(private var item: ArrayList<String>, private var item2 :Arr
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.gallery_item, parent, false)
 
-        itemContext=parent.context
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        Glide.with(holder.itemView).load(item).into(holder.thumbnail_imageView)
-
+        Glide.with(holder.itemView).load(photoList[position]).into(holder.thumbnail_imageView)
 
         //holder.enabledPlay_imageView.visibility = ImageView.VISIBLE
     }
 
-
-    override fun getItemCount(): Int = item!!.size
-
-
+    override fun getItemCount(): Int = photoList.size
 
 
 }
