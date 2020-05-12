@@ -7,10 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
@@ -23,6 +21,10 @@ import luv.zoey.edwith_pr.*
 import luv.zoey.edwith_pr.AppHelper
 import luv.zoey.edwith_pr.MovieDetail.Data.MovieDetailDTO
 import luv.zoey.edwith_pr.MovieDetail.Data.ResponseDTO
+import luv.zoey.edwith_pr.MovieDetail.Gallery.GalleryAdapter
+import luv.zoey.edwith_pr.MovieDetail.Review.ReviewAdapter
+import luv.zoey.edwith_pr.MovieDetail.Review.ReviewReadActivity
+import luv.zoey.edwith_pr.MovieDetail.Review.ReviewWriteActivity
 import luv.zoey.edwith_pr.MovieDetail.ReviewData.MovieReviewDTO
 import luv.zoey.edwith_pr.MovieDetail.ReviewData.ResponseReviewDTO
 import java.lang.Exception
@@ -92,13 +94,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 movieReviewList.add(it)
             }
 
-            reviewAdapter = ReviewAdapter(movieReviewList)
+            reviewAdapter = ReviewAdapter(
+                movieReviewList
+            )
             readMovieReview_recyclerView.adapter = reviewAdapter
 
             if(movieInfo.photos==null){
                 section_Fifth.visibility=ConstraintLayout.GONE
             }else{
-                galleryAdapter = GalleryAdapter(movieInfo)
+                galleryAdapter =
+                    GalleryAdapter(
+                        movieInfo
+                    )
                 gallery_recyclerView.adapter = galleryAdapter
             }
 
@@ -178,7 +185,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if(movieInfo.photos==null){
             section_Fifth.visibility=ConstraintLayout.GONE
         }else{
-            galleryAdapter = GalleryAdapter(movieInfo)
+            galleryAdapter =
+                GalleryAdapter(movieInfo)
             gallery_recyclerView.adapter = galleryAdapter
         }
 
@@ -227,7 +235,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         }
         // 리싸이클러 뷰에 어뎁터 설정해주기
-        reviewAdapter = ReviewAdapter(movieReviewList)
+        reviewAdapter =
+            ReviewAdapter(movieReviewList)
         readMovieReview_recyclerView.adapter = reviewAdapter
     }
 

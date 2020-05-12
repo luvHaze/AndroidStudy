@@ -1,18 +1,15 @@
-package luv.zoey.edwith_pr.MovieDetail
+package luv.zoey.edwith_pr.MovieDetail.Review
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
-import com.bumptech.glide.Glide
 import luv.zoey.edwith_pr.AppHelper
 import luv.zoey.edwith_pr.MovieDetail.ReviewData.MovieReviewDTO
 import luv.zoey.edwith_pr.R

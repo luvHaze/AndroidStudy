@@ -1,10 +1,10 @@
-package luv.zoey.edwith_pr.MovieDetail
+package luv.zoey.edwith_pr.MovieDetail.Review
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_review_read.*
+import luv.zoey.edwith_pr.MovieDetail.Review.ReviewAdapter
 import luv.zoey.edwith_pr.MovieDetail.ReviewData.MovieReviewDTO
 import luv.zoey.edwith_pr.R
 
@@ -26,6 +26,7 @@ class ReviewReadActivity : AppCompatActivity() {
         readReviewAll_RecyclerView.layoutManager=layoutManager
 
         // 어뎁터 설정
-        readReviewAll_RecyclerView.adapter= ReviewAdapter(dataList)
+        readReviewAll_RecyclerView.adapter=
+            ReviewAdapter(dataList)
     }
 }

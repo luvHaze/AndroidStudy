@@ -1,13 +1,13 @@
-package luv.zoey.edwith_pr.MovieDetail
+package luv.zoey.edwith_pr.MovieDetail.Review
 
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_review_write.*
+import luv.zoey.edwith_pr.MovieDetail.MainActivity
 import luv.zoey.edwith_pr.MovieDetail.ReviewData.MovieReviewDTO
 import luv.zoey.edwith_pr.R
-import kotlin.collections.ArrayList
 
 class ReviewWriteActivity : AppCompatActivity() {
 
