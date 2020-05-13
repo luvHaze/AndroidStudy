@@ -2,6 +2,7 @@ package luv.zoey.edwith_pr.MovieDetail.Gallery
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.google.android.exoplayer2.SimpleExoPlayer
 import luv.zoey.edwith_pr.R
 
@@ -11,7 +12,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_player)
 
-
+        Toast.makeText(this,intent.extras?.getString("URL").toString(), Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroy() {

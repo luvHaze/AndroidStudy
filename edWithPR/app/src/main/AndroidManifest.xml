@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MovieDetail.Gallery.VideoPlayerActivity"></activity>
+        <activity android:name=".MovieDetail.Gallery.ImageViewActivity"></activity>
+        <activity android:name=".MovieDetail.Gallery.VideoPlayerActivity" />
         <activity android:name=".MainMenu.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
