@@ -1,6 +1,7 @@
 package luv.zoey.edwith_pr.MovieDetail.Gallery
 
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -51,9 +52,15 @@ class GalleryAdapter(private var item: MovieDetailDTO) :
 
             if (holder.enabledPlay_imageView.visibility == View.VISIBLE) {
                 Toast.makeText(holder.itemView.context, "동영상", Toast.LENGTH_LONG).show()
-                val intent = Intent(holder.itemView.context, VideoPlayerActivity::class.java)
-                intent.putExtra("URL", urlList[position])
+//                val intent = Intent(holder.itemView.context, VideoPlayerActivity::class.java)
+//                intent.putExtra("URL", urlList[position])
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data=Uri.parse(urlList[position])
+                    `package`=("com.google.android.youtube")
+                }
+
                 holder.itemView.context.startActivity(intent)
+
 
             } else {
                 Toast.makeText(holder.itemView.context, "사진", Toast.LENGTH_LONG).show()
