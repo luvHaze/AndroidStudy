@@ -31,7 +31,6 @@ class GalleryAdapter(private var item: MovieDetailDTO) :
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.gallery_item, parent, false)
 
-
         return ViewHolder(view)
     }
 
