@@ -13,7 +13,6 @@ abstract class ArticleDatabase : RoomDatabase() {
 
     abstract fun getArticleDAO(): ArticleDao
 
-
     companion object {
         @Volatile
         private var instance: ArticleDatabase? = null
